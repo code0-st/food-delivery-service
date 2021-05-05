@@ -129,11 +129,11 @@ namespace FoodDeliveryService
                     .HasForeignKey(d => d.PicUpPointId)
                     .HasConstraintName("FK_orders_picUpPointId");
 
-                entity.HasOne(d => d.Status)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.StatusId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_orders_statusId");
+                //entity.HasOne(d => d.Status)
+                //   .WithMany(p => p.Orders)
+                //   .HasForeignKey(d => d.StatusId)
+                //   .OnDelete(DeleteBehavior.ClientSetNull)
+                //   .HasConstraintName("FK_orders_statusId");
             });
 
             modelBuilder.Entity<OrderStatus>(entity =>

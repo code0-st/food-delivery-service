@@ -11,33 +11,47 @@ namespace FoodDeliveryService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderStatusController : ControllerBase
+    public class OrdersController : ControllerBase
     {
         private readonly FoodDeliveryServiceContext _context;
 
-        public OrderStatusController(FoodDeliveryServiceContext context)
+        public OrdersController(FoodDeliveryServiceContext context)
         {
             _context = context;
         }
 
-        // GET: api/OrderStatus
+        // GET: api/Orders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderStatus>>> GetOrderStatuses()
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            return await _context.OrderStatuses. ToListAsync();
+            return await _context.Orders.ToListAsync();
         }
 
-        // PUT: api/OrderStatus/5
+        // GET: api/Orders/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Order>> GetOrder(int id)
+        {
+            var order = await _context.Orders.FindAsync(id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return order;
+        }
+
+        // PUT: api/Orders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrderStatus(int id, OrderStatus orderStatus)
+        public async Task<IActionResult> PutOrder(int id, Order order)
         {
-            if (id != orderStatus.Id)
+            if (id != order.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(orderStatus).State = EntityState.Modified;
+            _context.Entry(order).State = EntityState.Modified;
 
             try
             {
@@ -45,7 +59,7 @@ namespace FoodDeliveryService.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderStatusExists(id))
+                if (!OrderExists(id))
                 {
                     return NotFound();
                 }
@@ -58,36 +72,36 @@ namespace FoodDeliveryService.Controllers
             return NoContent();
         }
 
-        // POST: api/OrderStatus
+        // POST: api/Orders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<OrderStatus>> PostOrderStatus(OrderStatus orderStatus)
+        public async Task<ActionResult<Order>> PostOrder(Order order)
         {
-            _context.OrderStatuses.Add(orderStatus);
+            _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOrderStatus", new { id = orderStatus.Id }, orderStatus);
+            return CreatedAtAction("GetOrder", new { id = order.Id }, order);
         }
 
-        // DELETE: api/OrderStatus/5
+        // DELETE: api/Orders/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrderStatus(int id)
+        public async Task<IActionResult> DeleteOrder(int id)
         {
-            var orderStatus = await _context.OrderStatuses.FindAsync(id);
-            if (orderStatus == null)
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null)
             {
                 return NotFound();
             }
 
-            _context.OrderStatuses.Remove(orderStatus);
+            _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool OrderStatusExists(int id)
+        private bool OrderExists(int id)
         {
-            return _context.OrderStatuses.Any(e => e.Id == id);
+            return _context.Orders.Any(e => e.Id == id);
         }
     }
 }
