@@ -26,6 +26,7 @@ namespace FoodDeliveryService
             services.AddDbContext<FoodDeliveryServiceContext>(options => options.UseSqlServer(connectionString));
 
             services.AddControllers();
+
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
