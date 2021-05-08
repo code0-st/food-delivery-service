@@ -5,18 +5,17 @@ using System.Collections.Generic;
 
 namespace FoodDeliveryService
 {
-    public partial class Client
+    public partial class Client : User
     {
-        public int Id { get; set; }
+        public Client()
+        {
+            Orders = new HashSet<Order>();
+        }
+
         public string Address { get; set; }
         public int? DiscountId { get; set; }
-        public string UserName { get; set; }
-        public int? Age { get; set; }
-        public string Phone { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Patronymic { get; set; }
-        public virtual Discount IdNavigation { get; set; }
 
+        public virtual Discount Discount { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

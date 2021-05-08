@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FoodDeliveryService;
+using FoodDeliveryService.Models;
 
 namespace FoodDeliveryService.Controllers
 {
@@ -24,33 +25,10 @@ namespace FoodDeliveryService.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Worker>>> GetWorkers()
         {
-            var workers = from worker in _context.Workers
-                          join dep in _context.Departments on worker.DepartmentId equals dep.Id
-                          join pos in _context.Positions on worker.PositionId equals pos.Id
-                          select new Worker
-                          {
-                              Id = worker.Id,
-                              FirstName = worker.FirstName,
-                              LastName = worker.LastName,
-                              Patronymic = worker.Patronymic,
-                              UserName = worker.UserName,
-                              Age = worker.Age,
-                              Phone = worker.Phone,
-                              WorkPhone = worker.WorkPhone,
-                              DepartmentId = worker.DepartmentId,
-                              PositionId = worker.PositionId,
-                              Department = new Department
-                              {
-                                  Id = worker.DepartmentId,
-                                  Name = dep.Name,
-                              },
-                              Position = new Position
-                              {
-                                  Id = worker.PositionId,
-                                  Name = pos.Name
-                              }
-                          };
-            return workers.ToList();
+            return await _context.Workers
+                .Include(w => w.Department)
+                .Include(w => w.Position)
+                .ToListAsync();
         }
 
         // GET: api/Workers/5
@@ -63,9 +41,6 @@ namespace FoodDeliveryService.Controllers
             {
                 return NotFound();
             }
-
-            worker.Position = _context.Positions.Find(worker.PositionId);
-            worker.Department = _context.Departments.Find(worker.DepartmentId);
 
             return worker;
         }
@@ -107,21 +82,7 @@ namespace FoodDeliveryService.Controllers
         public async Task<ActionResult<Worker>> PostWorker(Worker worker)
         {
             _context.Workers.Add(worker);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (WorkerExists(worker.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetWorker", new { id = worker.Id }, worker);
         }
