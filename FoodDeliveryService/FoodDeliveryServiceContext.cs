@@ -1,4 +1,5 @@
 ﻿using System;
+using FoodDeliveryService.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -25,6 +26,7 @@ namespace FoodDeliveryService
         public virtual DbSet<PicUpPoint> PicUpPoints { get; set; }
         public virtual DbSet<Position> Positions { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Catalog> Catalogs { get; set; }
         public virtual DbSet<ProductsInOrder> ProductsInOrders { get; set; }
         public virtual DbSet<Worker> Workers { get; set; }
 

@@ -6,56 +6,53 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FoodDeliveryService;
+using FoodDeliveryService.Models;
 
 namespace FoodDeliveryService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrdersController : ControllerBase
+    public class CatalogsController : ControllerBase
     {
         private readonly FoodDeliveryServiceContext _context;
 
-        public OrdersController(FoodDeliveryServiceContext context)
+        public CatalogsController(FoodDeliveryServiceContext context)
         {
             _context = context;
         }
 
-        // GET: api/Orders
+        // GET: api/Catalogs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<Catalog>>> GetCatalogs()
         {
-            return await _context.Orders
-                .Include(o => o.Client)
-                .Include(o => o.Status)
-                .Include(o => o.PicUpPoint)
-                .ToListAsync();
+            return await _context.Catalogs.ToListAsync();
         }
 
-        // GET: api/Orders/5
+        // GET: api/Catalogs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Order>> GetOrder(int id)
+        public async Task<ActionResult<Catalog>> GetCatalog(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var catalog = await _context.Catalogs.FindAsync(id);
 
-            if (order == null)
+            if (catalog == null)
             {
                 return NotFound();
             }
 
-            return order;
+            return catalog;
         }
 
-        // PUT: api/Orders/5
+        // PUT: api/Catalogs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrder(int id, Order order)
+        public async Task<IActionResult> PutCatalog(int id, Catalog catalog)
         {
-            if (id != order.Id)
+            if (id != catalog.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(order).State = EntityState.Modified;
+            _context.Entry(catalog).State = EntityState.Modified;
 
             try
             {
@@ -63,7 +60,7 @@ namespace FoodDeliveryService.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderExists(id))
+                if (!CatalogExists(id))
                 {
                     return NotFound();
                 }
@@ -76,36 +73,36 @@ namespace FoodDeliveryService.Controllers
             return NoContent();
         }
 
-        // POST: api/Orders
+        // POST: api/Catalogs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(Order order)
+        public async Task<ActionResult<Catalog>> PostCatalog(Catalog catalog)
         {
-            _context.Orders.Add(order);
+            _context.Catalogs.Add(catalog);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOrder", new { id = order.Id }, order);
+            return CreatedAtAction("GetCatalog", new { id = catalog.Id }, catalog);
         }
 
-        // DELETE: api/Orders/5
+        // DELETE: api/Catalogs/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(int id)
+        public async Task<IActionResult> DeleteCatalog(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
+            var catalog = await _context.Catalogs.FindAsync(id);
+            if (catalog == null)
             {
                 return NotFound();
             }
 
-            _context.Orders.Remove(order);
+            _context.Catalogs.Remove(catalog);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool OrderExists(int id)
+        private bool CatalogExists(int id)
         {
-            return _context.Orders.Any(e => e.Id == id);
+            return _context.Catalogs.Any(e => e.Id == id);
         }
     }
 }

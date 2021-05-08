@@ -25,7 +25,9 @@ namespace FoodDeliveryService
             string connectionString = "Server=LAPTOP-SBO5617V;Database=FoodDeliveryService;User Id=sa;Password=11;";
             services.AddDbContext<FoodDeliveryServiceContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+             );
 
             services.AddControllersWithViews();
 

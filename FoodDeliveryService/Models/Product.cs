@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FoodDeliveryService.Models;
 
 #nullable disable
 
@@ -7,15 +6,10 @@ namespace FoodDeliveryService
 {
     public partial class Product
     {
-        public Product()
-        {
-            ProductsInOrders = new HashSet<ProductsInOrder>();
-        }
-
         public int Id { get; set; }
         public string Name { get; set; }
         public int Price { get; set; }
-
-        public virtual ICollection<ProductsInOrder> ProductsInOrders { get; set; }
+        public int? Weight { get; set; }
+        public int CatalogId { get; set; }
     }
 }

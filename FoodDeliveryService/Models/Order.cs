@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -15,7 +14,7 @@ namespace FoodDeliveryService
 
         public int Id { get; set; }
         public DateTime DateCreated { get; set; }
-        public DateTime DateClosed { get; set; }
+        public DateTime? DateClosed { get; set; }
         public int ClientId { get; set; }
         public int StatusId { get; set; }
         public int? PicUpPointId { get; set; }
