@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
-
-#nullable disable
-
-namespace FoodDeliveryService
+﻿namespace FoodDeliveryService
 {
     public partial class Position
     { 

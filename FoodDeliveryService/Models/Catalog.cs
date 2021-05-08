@@ -1,4 +1,4 @@
-﻿namespace FoodDeliveryService.Models
+﻿namespace FoodDeliveryService
 {
     public partial class Catalog
     {

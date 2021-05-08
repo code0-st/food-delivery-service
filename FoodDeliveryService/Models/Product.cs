@@ -1,8 +1,4 @@
-﻿using FoodDeliveryService.Models;
-
-#nullable disable
-
-namespace FoodDeliveryService
+﻿namespace FoodDeliveryService
 {
     public partial class Product
     {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-#nullable disable
-
-namespace FoodDeliveryService
+﻿namespace FoodDeliveryService
 {
     public partial class User
     {
@@ -13,6 +8,7 @@ namespace FoodDeliveryService
         public string Patronymic { get; set; }
         public string Phone { get; set; }
         public string UserName { get; set; }
+        public string UserRole { get; set; }
 
     }
 }
