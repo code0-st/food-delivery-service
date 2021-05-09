@@ -2,11 +2,10 @@
   height: 56px;
   display: flex;
   align-items: center;
-  justify-content: center;
-
   & svg {
     width: 56px !important;
     height: 45px !important;
+    margin-right: 5px;
   }
 
   div {
@@ -15,5 +14,23 @@
     font-size: 2rem;
     text-shadow: 3px 3px 4px #fff;
     line-height: 100%;
+  }
+}
+
+.label_iconed {
+  display: flex;
+  align-items: center;
+  svg {
+    width: 32px!important;
+    height: 32px!important;
+    margin-right: 10px;
+  }
+  div {
+    font-size: 1.2rem;
+  }
+  &:hover {
+    svg path {
+      fill: #115295;
+    }
   }
 }

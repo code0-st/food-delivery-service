@@ -75,7 +75,11 @@ namespace FoodDeliveryService.Controllers
 
         private ClaimsIdentity GetIdentity(string username, string password)
         {
-            var user = _context.Users.FirstOrDefault(u => u.UserName == username);
+            var hash = new HashPasswordOprions(password);
+            string userPasHash = hash.GetHashString();
+
+            var user = _context.Users.FirstOrDefault(u => u.UserName == username && u.Password == userPasHash);
+            
             if (user != null)
             {
                 var claims = new List<Claim>

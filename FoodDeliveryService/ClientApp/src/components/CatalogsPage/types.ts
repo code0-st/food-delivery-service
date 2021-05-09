@@ -5,3 +5,8 @@ export interface ICatalogsPageProps {
     catalogsLoading: boolean
     getCatalogsAsync: any
 }
+
+export interface ICatalogCardProps {
+    catalog: TEnumItem
+    index: number
+}

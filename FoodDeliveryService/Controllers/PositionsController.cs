@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FoodDeliveryService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FoodDeliveryService.Controllers
 {
@@ -21,6 +19,7 @@ namespace FoodDeliveryService.Controllers
         }
 
         // GET: api/Positions
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Position>>> GetPositions()
         {

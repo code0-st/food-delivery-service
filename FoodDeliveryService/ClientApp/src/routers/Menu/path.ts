@@ -1,7 +1,7 @@
 import {config} from "../config";
 
-const {catalogs} = config
+const {menu} = config
 
-export const catalogsPaths = {
-    main: catalogs
+export const menuPaths = {
+    main: menu
 }
