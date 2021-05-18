@@ -2,6 +2,7 @@
   height: 56px;
   display: flex;
   align-items: center;
+
   & svg {
     width: 56px !important;
     height: 45px !important;
@@ -20,17 +21,59 @@
 .label_iconed {
   display: flex;
   align-items: center;
+
   svg {
-    width: 32px!important;
-    height: 32px!important;
+    width: 32px !important;
+    height: 32px !important;
     margin-right: 10px;
   }
+
   div {
     font-size: 1.2rem;
   }
+
   &:hover {
     svg path {
       fill: #115295;
     }
+  }
+}
+
+.basket {
+  cursor: pointer;
+  position: absolute;
+  height: 56px;
+  top: 60%;
+  right: 60px;
+  transform: translate(0px, -50%);
+
+  & svg {
+    width: 56px !important;
+    height: 45px !important;
+  }
+
+  &:hover {
+    animation-name: shake;
+    animation-duration: .5s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(0px, -50%) rotate(0deg);
+  }
+  25% {
+    transform: translate(0px, -50%) rotate(20deg);
+  }
+  50% {
+    transform: translate(0px, -50%) rotate(0deg);
+  }
+  75% {
+    transform: translate(0px, -50%) rotate(-20deg);
+  }
+  100% {
+    transform: translate(0px, -50%) rotate(0deg);
   }
 }

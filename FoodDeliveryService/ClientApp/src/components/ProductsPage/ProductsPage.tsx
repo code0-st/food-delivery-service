@@ -4,7 +4,7 @@ import {TRootState} from "../../redux/store";
 import {connect} from "react-redux";
 import {getProductsListAsync} from "../../redux/reducers/products/actions";
 import {Loading} from "../common/Loading/Loading";
-import {ProductCard} from "./ProductCard";
+import {ProductCardContainer} from "./ProductCard";
 import {Pagination} from "@material-ui/lab";
 
 
@@ -13,7 +13,7 @@ const s = require('./styles.module.scss')
 const ProductsPage: React.FC<IProductsPageProps> = ({
                                                         getProductsListAsync,
                                                         productsList,
-                                                        productsListLoading
+                                                        productsListLoading,
                                                     }) => {
     useEffect(() => {
         getProductsListAsync()
@@ -29,14 +29,16 @@ const ProductsPage: React.FC<IProductsPageProps> = ({
     return (
         <div className={s.content}>
             {productsListLoading
-                ? <Loading/>
+                ? <div className={s.loading}>
+                    <Loading/>
+                </div>
                 : <div className={s.content_body}>
                     {productsList
                     && productsList.length > 0
                     && productsList.filter((item, index) => index >= PAGE_SIZE * (currentPage - 1) && index < PAGE_SIZE * currentPage)
                         .map((item, index) => {
                             if (index < PAGE_SIZE * currentPage) {
-                                return <ProductCard key={item.id}
+                                return <ProductCardContainer key={item.id}
                                                     product={item}
                                                     index={index}/>
                             }
@@ -58,6 +60,6 @@ const mapStateToProps = (state: TRootState) => ({
     productsListLoading: state.products.productListLoading,
 })
 const mapDispatchToProps = {
-    getProductsListAsync
+    getProductsListAsync,
 }
 export const ProductsPageContainer = connect(mapStateToProps, mapDispatchToProps)(ProductsPage)

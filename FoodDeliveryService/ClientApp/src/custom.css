@@ -38,3 +38,9 @@ h1, h2, h3, h4 {
   height: 100% !important;
   width: 100% !important;
 }
+
+/* change MUIU */
+
+.MuiDialog-paperWidthSm {
+  max-width: 1300px!important;
+}

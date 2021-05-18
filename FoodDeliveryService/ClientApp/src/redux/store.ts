@@ -12,6 +12,8 @@ import {userReducer} from "./reducers/user";
 import {TUserReducer} from "./reducers/user/types";
 import {productsReducer} from "./reducers/products";
 import {TProductsReducer} from "./reducers/products/types";
+import {shopBasketReducer} from "./reducers/shopBasket";
+import {TShopBasketReducer} from "./reducers/shopBasket/types";
 
 const combinedReducers = combineReducers({
     launch: launchReducer,
@@ -20,6 +22,7 @@ const combinedReducers = combineReducers({
     rootPage: rootPageReducer,
     enums: enumsReducer,
     products: productsReducer,
+    shopBasket: shopBasketReducer,
 })
 
 const store = createStore(combinedReducers,
@@ -32,6 +35,7 @@ export type TRootState = {
     rootPage: TRootPageReducer
     enums: TEnumsReducer
     products: TProductsReducer
+    shopBasket: TShopBasketReducer
 }
 
 export {store}

@@ -4,7 +4,10 @@ import {ReactComponent as CopyrightIcon} from "./CopyrightIcon.svg";
 import {ReactComponent as HamburgerIcon} from "./HamburgerIcon.svg";
 import {ReactComponent as ImageIcon} from "./ImageIcon.svg";
 import {ReactComponent as WeightIcon} from "./WeightIcon.svg";
+import {ReactComponent as ShopBasketIcon} from "./ShopBasketIcon.svg";
+import {ReactComponent as CloseIcon} from "./CloseIcon.svg";
 
 export {
-    HamburgerIcon, CopyrightIcon, LoginIcon, UserIcon, ImageIcon, WeightIcon,
+    HamburgerIcon, CopyrightIcon, LoginIcon, UserIcon, ImageIcon, WeightIcon, ShopBasketIcon,
+    CloseIcon,
 }
