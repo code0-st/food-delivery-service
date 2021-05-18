@@ -8,6 +8,7 @@ export const paths = {
         positions: 'api/positions',
     },
     workers: 'api/workers',
+    clients: 'api/clients',
     products: 'api/products',
     orders: 'api/orders'
 }

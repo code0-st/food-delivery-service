@@ -3,8 +3,6 @@ import {ICatalogsPageProps} from "./types";
 import {TRootState} from "../../redux/store";
 import {connect} from "react-redux";
 import {getCatalogsAsync} from "../../redux/reducers/enums/actions";
-import Spinner from "reactstrap/lib/Spinner";
-import {Fade, ListGroup, ListGroupItem} from "reactstrap";
 import {CatalogCard} from "./CatalogCard";
 import {Loading} from "../common/Loading/Loading";
 
@@ -20,7 +18,7 @@ const CatalogsPage: React.FC<ICatalogsPageProps> = ({
     return (
         <div className={s.content}>
             {catalogsLoading
-                ? <Loading/>
+                ? <Loading />
                 : <div className={s.content_body}>
                     {catalogs
                     && catalogs.length > 0

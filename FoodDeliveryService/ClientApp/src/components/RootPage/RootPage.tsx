@@ -7,20 +7,23 @@ import {ISetCurrentRootPage} from "../../redux/reducers/rootPage/actions/types";
 import {SimpleNavigation} from "../common/Navigation/Navigation";
 import {CopyrightIcon} from "../../icons/icons";
 import {CreateLogo} from "../common/IconedLabels/Logo";
-import {ProfileLink} from "../common/IconedLabels/ProfileLink";
 import {LoginLink} from "../common/IconedLabels/LoginLink";
+import {IClient, IWorker} from "../../redux/reducers/user/types.data";
+import {ProfileLink} from "../common/IconedLabels/ProfileLink";
 
 const s = require('./styles.module.scss')
 
 interface IRootPageProps {
     internalPages: INavigationItem[]
     setCurrentRootPage: ISetCurrentRootPage
+    userInfo: IClient | IWorker | null
 }
 
 const RootPage: React.FC<IRootPageProps> = ({
                                                 internalPages,
                                                 setCurrentRootPage,
                                                 children,
+                                                userInfo,
                                             }) => {
     return <div className={s.root}>
         <div className={s.root_header}>
@@ -28,8 +31,9 @@ const RootPage: React.FC<IRootPageProps> = ({
                 <SimpleNavigation internalPages={internalPages}
                                   setCurrentPage={setCurrentRootPage}/>
                 <CreateLogo/>
-                {/*<ProfileLink userName={'Тестовый Тест'} />*/}
-                <LoginLink/>
+                {userInfo
+                    ? <ProfileLink userName={userInfo.userName}/>
+                    : <LoginLink/>}
             </div>
         </div>
         {children}
@@ -42,6 +46,7 @@ const RootPage: React.FC<IRootPageProps> = ({
 
 const mapStateToProps = (state: TRootState) => ({
     internalPages: state.rootPage.internalPages,
+    userInfo: state.user.userInfo,
 })
 const mapDispatchToProps = {
     setCurrentRootPage

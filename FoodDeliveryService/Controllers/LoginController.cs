@@ -70,6 +70,8 @@ namespace FoodDeliveryService.Controllers
             new {
                 access_token = encodeJwt,
                 username = identify.Name,
+                userRole = user.UserRole,
+                id = user.Id,
             });
         }
 

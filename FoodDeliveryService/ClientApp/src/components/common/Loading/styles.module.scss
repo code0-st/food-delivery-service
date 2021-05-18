@@ -2,4 +2,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  div {
+    margin: 0px 5px;
+  }
+  span {
+    display: none!important;
+  }
 }

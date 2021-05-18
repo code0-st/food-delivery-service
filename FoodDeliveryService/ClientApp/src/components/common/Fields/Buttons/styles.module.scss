@@ -1,0 +1,23 @@
+.button {
+  padding: 8px 35px!important;
+  box-sizing: border-box;
+  min-width: 0px!important;
+  background: #b93c5d!important;
+  & span:first-child {
+    white-space: nowrap;
+    font-style: normal;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: #F3F3F3;
+  }
+  & span:last-child {}
+  & svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+.disabled {
+  opacity: 0.7!important;
+  background: #5f1f30!important;
+}
