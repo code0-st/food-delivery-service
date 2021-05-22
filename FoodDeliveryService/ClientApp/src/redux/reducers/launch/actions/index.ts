@@ -6,7 +6,7 @@ function loginRedirect() {
         window.location.pathname = '/login'
     }
 }
-export const initAppWorker = (id: number, role: string) => (dispatch: any) => {
+export const initAppWorker = (id: string | null, role: string | null) => (dispatch: any) => {
     try {
         dispatch(setInitAppLoading(true))
         dispatch(getUserInfoAsync(id, role))

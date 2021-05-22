@@ -4,17 +4,17 @@ import {paths} from "../../paths";
 export const userRequests = () => ({
     open: () => ({}),
     close: (token: string | null) => ({
-        getClientInfo: (body: number) => {
-            return instanceAxiosClose(token).get(paths.clients + `/${body}`)
+        getClientInfo: (body: string | null) => {
+            return instanceAxiosClose(token).get(`${paths.clients.list}/${body}`)
         },
-        getWorkerInfo: (body: number) => {
-            return instanceAxiosClose(token).get(paths.workers + `/${body}`)
+        getWorkerInfo: (body: string | null) => {
+            return instanceAxiosClose(token).get(`${paths.workers.list}/${body}`)
         },
         getClientsList: () => {
-            return instanceAxiosClose(token).get(paths.clients)
+            return instanceAxiosClose(token).get(paths.clients.list)
         },
         getWorkersList: () => {
-            return instanceAxiosClose(token).get(paths.workers)
+            return instanceAxiosClose(token).get(paths.workers.list)
         }
     }),
 })

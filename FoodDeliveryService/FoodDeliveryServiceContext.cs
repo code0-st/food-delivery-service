@@ -208,7 +208,8 @@ namespace FoodDeliveryService
             {
                 entity.ToTable("users");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id");
 
                 entity.Property(e => e.FirstName)
                     .HasMaxLength(50)
@@ -222,15 +223,19 @@ namespace FoodDeliveryService
                     .HasMaxLength(50)
                     .HasColumnName("patronymic");
 
+                entity.Property(e => e.UserName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("userName");
+
+                entity.Property(e => e.Password).HasColumnName("password");
+
                 entity.Property(e => e.Phone)
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("phone");
 
-                entity.Property(e => e.UserName)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("userName");
+                entity.Property(e => e.UserRole).HasColumnName("userRole");
             });
 
             modelBuilder.Entity<Worker>(entity =>

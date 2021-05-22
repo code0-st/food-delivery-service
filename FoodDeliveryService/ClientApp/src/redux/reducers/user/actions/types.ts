@@ -7,7 +7,7 @@ import {
 } from "../types";
 
 export interface IRequestUserInfo {
-    (id: number, role: string): void
+    (id: string | null, role: string | null): void
 }
 export interface ISetUserInfo {
     (payload: IClient | IWorker | null): SET_USER_INFO_ACTION

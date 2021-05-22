@@ -13,7 +13,7 @@ namespace FoodDeliveryService
         public int Id { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateClosed { get; set; }
-        public int ClientId { get; set; }
+        public Guid ClientId { get; set; }
         public int StatusId { get; set; }
         public int? PicUpPointId { get; set; }
 

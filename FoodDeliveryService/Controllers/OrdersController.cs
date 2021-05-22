@@ -28,6 +28,7 @@ namespace FoodDeliveryService.Controllers
                 .Include(o => o.Client)
                 .Include(o => o.Status)
                 .Include(o => o.PicUpPoint)
+                .Include(o => o.ProductsInOrders)
                 .ToListAsync();
         }
 
@@ -81,7 +82,12 @@ namespace FoodDeliveryService.Controllers
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
-            _context.Orders.Add(order);
+            _context.Orders.Add(new Order 
+            {
+                ClientId = order.ClientId,
+                StatusId = 1, // Принят в обаботку
+                DateCreated = DateTime.Now
+            });
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetOrder", new { id = order.Id }, order);

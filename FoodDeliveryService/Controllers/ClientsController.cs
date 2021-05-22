@@ -29,7 +29,7 @@ namespace FoodDeliveryService.Controllers
 
         // GET: api/Clients/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Client>> GetClient(int id)
+        public async Task<ActionResult<Client>> GetClient(Guid id)
         {
             var client = await _context.Clients.FindAsync(id);
 
@@ -44,7 +44,7 @@ namespace FoodDeliveryService.Controllers
         // PUT: api/Clients/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutClient(int id, Client client)
+        public async Task<IActionResult> PutClient(Guid id, Client client)
         {
             if (id != client.Id)
             {
@@ -77,7 +77,22 @@ namespace FoodDeliveryService.Controllers
         [HttpPost]
         public async Task<ActionResult<Client>> PostClient(Client client)
         {
-            _context.Clients.Add(client);
+            var hash = new HashPasswordOprions(client.Password);
+            string userPasHash = hash.GetHashString();
+
+            _context.Clients.Add(new Client 
+            {
+                FirstName = client.FirstName,
+                LastName = client.LastName,
+                Patronymic = client.Patronymic,
+                UserName = client.UserName,
+                Password = userPasHash,
+                Phone = client.Phone,
+                UserRole = "client",
+                Id = Guid.NewGuid(),
+                DiscountId = client.DiscountId,
+                Address = client.Address,
+            });
             try
             {
                 await _context.SaveChangesAsync();
@@ -99,7 +114,7 @@ namespace FoodDeliveryService.Controllers
 
         // DELETE: api/Clients/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClient(int id)
+        public async Task<IActionResult> DeleteClient(Guid id)
         {
             var client = await _context.Clients.FindAsync(id);
             if (client == null)
@@ -113,7 +128,7 @@ namespace FoodDeliveryService.Controllers
             return NoContent();
         }
 
-        private bool ClientExists(int id)
+        private bool ClientExists(Guid id)
         {
             return _context.Clients.Any(e => e.Id == id);
         }

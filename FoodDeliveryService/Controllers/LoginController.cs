@@ -24,19 +24,19 @@ namespace FoodDeliveryService.Controllers
         private void CheckUserInToken(User user, ref bool userExisted)
         {
             var token = _context.Tokens.FirstOrDefault(t => t.UserId == user.Id);
-            if(token != null)
+            if (token != null)
             {
                 userExisted = true;
             }
         }
 
         [HttpPost]
-        public ActionResult Login([FromBody]Login login)
+        public ActionResult Login([FromBody] Login login)
         {
             var identify = GetIdentity(login.Username, login.Password);
-            if(identify == null)
+            if (identify == null)
             {
-                return BadRequest(new { errorTest = "Неверный логин или пароль" });
+                return BadRequest(new { errorText = "Неверный логин или пароль" });
             }
             var now = DateTime.UtcNow;
             // создаем токен
@@ -53,11 +53,12 @@ namespace FoodDeliveryService.Controllers
             User user = _context.Users.FirstOrDefault(u => u.UserName == login.Username);
             CheckUserInToken(user, ref this.userExisted);
 
-            if(userExisted)
-            { 
+            if (userExisted)
+            {
                 var currentToken = _context.Tokens.First(t => t.UserId == user.Id);
                 currentToken.TokenValue = encodeJwt;
-            } else
+            }
+            else
             {
                 _context.Tokens.Add(new Token
                 {
@@ -67,7 +68,8 @@ namespace FoodDeliveryService.Controllers
             }
             _context.SaveChanges();
             return Ok(
-            new {
+            new
+            {
                 access_token = encodeJwt,
                 username = identify.Name,
                 userRole = user.UserRole,
@@ -81,7 +83,7 @@ namespace FoodDeliveryService.Controllers
             string userPasHash = hash.GetHashString();
 
             var user = _context.Users.FirstOrDefault(u => u.UserName == username && u.Password == userPasHash);
-            
+
             if (user != null)
             {
                 var claims = new List<Claim>

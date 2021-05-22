@@ -3,7 +3,7 @@ import {setLoginLoading} from "./actions";
 import {instance} from "../../../api";
 import {keys} from "../../../api/keys";
 import {initAppWorker} from "../../launch/actions";
-import {saveUserRole} from "../../../../helpers/helpers";
+import {saveUserId, saveUserRole} from "../../../../helpers/helpers";
 import {history} from "../../../../index";
 
 export const loginAsync: IRequestLogin = payload => async (dispatch: any) => {
@@ -13,7 +13,9 @@ export const loginAsync: IRequestLogin = payload => async (dispatch: any) => {
         .then(res => {
             history.push('/')
             localStorage.setItem(main, res.data.access_token)
+            saveUserId(res.data.id)
             saveUserRole(res.data.userRole)
+
             dispatch(initAppWorker(res.data.id, res.data.userRole))
         })
         .catch(err => {

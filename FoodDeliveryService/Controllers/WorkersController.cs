@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using FoodDeliveryService;
 
 namespace FoodDeliveryService.Controllers
 {
@@ -30,7 +32,7 @@ namespace FoodDeliveryService.Controllers
 
         // GET: api/Workers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Worker>> GetWorker(int id)
+        public async Task<ActionResult<Worker>> GetWorker(Guid id)
         {
             var worker = await _context.Workers.FindAsync(id);
 
@@ -39,13 +41,16 @@ namespace FoodDeliveryService.Controllers
                 return NotFound();
             }
 
+            worker.Department = _context.Departments.Find(worker.DepartmentId);
+            worker.Position = _context.Positions.Find(worker.PositionId);
+
             return worker;
         }
 
         // PUT: api/Workers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWorker(int id, Worker worker)
+        public async Task<IActionResult> PutWorker(Guid id, Worker worker)
         {
             if (id != worker.Id)
             {
@@ -78,15 +83,45 @@ namespace FoodDeliveryService.Controllers
         [HttpPost]
         public async Task<ActionResult<Worker>> PostWorker(Worker worker)
         {
-            _context.Workers.Add(worker);
-            await _context.SaveChangesAsync();
+            var hash = new HashPasswordOprions(worker.Password);
+            string userPasHash = hash.GetHashString();
+
+            _context.Workers.Add(new Worker 
+            {
+                FirstName = worker.FirstName,
+                LastName = worker.LastName,
+                Patronymic = worker.Patronymic,
+                UserName = worker.UserName,
+                Password = userPasHash,
+                Phone = worker.Phone,
+                UserRole = "worker",
+                DepartmentId = worker.DepartmentId,
+                PositionId = worker.PositionId,
+                WorkPhone = worker.WorkPhone,
+                Id = Guid.NewGuid()
+            });
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (WorkerExists(worker.Id))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return CreatedAtAction("GetWorker", new { id = worker.Id }, worker);
         }
 
         // DELETE: api/Workers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWorker(int id)
+        public async Task<IActionResult> DeleteWorker(Guid id)
         {
             var worker = await _context.Workers.FindAsync(id);
             if (worker == null)
@@ -100,7 +135,7 @@ namespace FoodDeliveryService.Controllers
             return NoContent();
         }
 
-        private bool WorkerExists(int id)
+        private bool WorkerExists(Guid id)
         {
             return _context.Workers.Any(e => e.Id == id);
         }

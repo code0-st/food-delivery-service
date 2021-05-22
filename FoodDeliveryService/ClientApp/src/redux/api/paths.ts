@@ -7,8 +7,14 @@ export const paths = {
         departments: 'api/departments',
         positions: 'api/positions',
     },
-    workers: 'api/workers',
-    clients: 'api/clients',
+    workers: {
+        me: 'api/workers/me',
+        list: 'api/workers'
+    },
+    clients: {
+        me: 'api/clients/me',
+        list: 'api/clients'
+    },
     products: 'api/products',
     orders: 'api/orders'
 }
