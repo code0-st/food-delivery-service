@@ -5,9 +5,9 @@ import {ProductsPageContainer} from "../../components/ProductsPage/ProductsPage"
 
 export const MainSwitch: React.FC = () => (
     <Route exact={false}
-           path={ROUTE_PATHS.main.main}>
+           path={ROUTE_PATHS.products.path}>
         <Switch>
-            <Route path={ROUTE_PATHS.main.main}
+            <Route path={ROUTE_PATHS.products.path}
                    exact
                    component={() => <ProductsPageContainer />}/>
         </Switch>
