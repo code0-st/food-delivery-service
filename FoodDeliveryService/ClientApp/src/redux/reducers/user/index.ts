@@ -1,6 +1,7 @@
 import {
     SET_CLIENTS_LIST,
     SET_CLIENTS_LIST_LOADING,
+    SET_CREATE_USER_LOADING,
     SET_USER_INFO,
     SET_USER_INFO_LOADING,
     SET_WORKERS_LIST,
@@ -15,6 +16,7 @@ const initialState: TUserReducer = {
     workersList: [],
     loadings: {
         userInfoLoading: false,
+        createUserLoading: false,
         clientsListLoading: false,
         workersListLoading: false,
     }
@@ -64,6 +66,15 @@ export const userReducer = (state = initialState, action: USER_ACTIONS) => {
                 loadings: {
                     ...state.loadings,
                     workersListLoading: action.payload
+                }
+            }
+        }
+        case SET_CREATE_USER_LOADING: {
+            return {
+                ...state,
+                loadings: {
+                    ...state.loadings,
+                    createUserLoading: action.payload
                 }
             }
         }

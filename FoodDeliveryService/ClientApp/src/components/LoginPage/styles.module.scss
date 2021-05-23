@@ -15,7 +15,24 @@
   padding: 20px 40px;
   background: #fff;
   box-shadow: 0 0 12px #D97F2B;
+
   & > div {
     margin-bottom: 40px;
   }
+}
+
+.row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & > *:first-child {
+    margin-right: 30px;
+  }
+}
+
+.sign_up {
+  margin-top: 10px;
+  font-size: 1rem;
 }

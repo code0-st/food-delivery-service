@@ -9,6 +9,7 @@ interface ISimpleInputProps {
     value: string
     onChange: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
     size?: 'lg' | 'md' | 'xs'
+    fieldProps?: any
 
     [key: string]: any
 }
@@ -18,6 +19,7 @@ export const SimpleInput: React.FC<ISimpleInputProps> = ({
                                                              onChange,
                                                              label,
                                                              size = 'lg',
+                                                             fieldProps,
                                                              ...props
                                                          }) => {
     const classes = clsx(

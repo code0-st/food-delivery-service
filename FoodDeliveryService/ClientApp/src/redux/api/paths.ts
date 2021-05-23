@@ -16,5 +16,6 @@ export const paths = {
         list: 'api/clients'
     },
     products: 'api/products',
-    orders: 'api/orders'
+    orders: 'api/orders',
+    productsInOrder: '/api/ProductsInOrders',
 }

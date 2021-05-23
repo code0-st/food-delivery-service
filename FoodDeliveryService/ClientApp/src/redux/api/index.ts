@@ -3,6 +3,7 @@ import {enumsRequests} from "./requests/enums/enumsRequests";
 import {authRequests} from "./requests/auth/authRequests";
 import {userRequests} from "./requests/user/userRequests";
 import {productsRequests} from "./requests/products/productsRequests";
+import {ordersRequests} from "./requests/orders/ordersRequests";
 
 export const instance = () => {
     const mainKey = keys.main
@@ -12,10 +13,12 @@ export const instance = () => {
             ...enumsRequests().open(),
             ...authRequests().open(),
             ...productsRequests().open(),
+            ...userRequests().open(),
         }),
         close: () => ({
             ...enumsRequests().close(token),
-            ...userRequests().close(token)
+            ...userRequests().close(token),
+            ...ordersRequests().close(token),
         }),
     }
 }

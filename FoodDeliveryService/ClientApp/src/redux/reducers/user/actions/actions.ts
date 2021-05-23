@@ -1,6 +1,6 @@
 import {
     ISetClientsList,
-    ISetClientsListLoading,
+    ISetClientsListLoading, ISetCreateUserLoading,
     ISetUserInfo,
     ISetUserInfoLoading,
     ISetWorkersList,
@@ -8,7 +8,7 @@ import {
 } from "./types";
 import {
     SET_CLIENTS_LIST,
-    SET_CLIENTS_LIST_LOADING,
+    SET_CLIENTS_LIST_LOADING, SET_CREATE_USER_LOADING,
     SET_USER_INFO,
     SET_USER_INFO_LOADING,
     SET_WORKERS_LIST, SET_WORKERS_LIST_LOADING
@@ -37,5 +37,9 @@ export const setClientsListLoading: ISetClientsListLoading = payload => ({
 })
 export const setWorkersListLoading: ISetWorkersListLoading = payload => ({
     type: SET_WORKERS_LIST_LOADING,
+    payload
+})
+export const setCreateUserLoading: ISetCreateUserLoading = payload => ({
+    type: SET_CREATE_USER_LOADING,
     payload
 })

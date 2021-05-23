@@ -8,6 +8,7 @@ export type TUserReducer = {
 
     loadings: {
         userInfoLoading: boolean
+        createUserLoading: boolean
         clientsListLoading: boolean
         workersListLoading: boolean
     }
@@ -44,6 +45,12 @@ export type SET_WORKERS_LIST_LOADING_ACTION = {
     payload: boolean
 }
 
+export const SET_CREATE_USER_LOADING = 'SET_CREATE_USER_LOADING'
+export type SET_CREATE_USER_LOADING_ACTION = {
+    type: typeof SET_CREATE_USER_LOADING,
+    payload: boolean
+}
+
 export type USER_ACTIONS =
     | SET_USER_INFO_ACTION
     | SET_USER_INFO_LOADING_ACTION
@@ -51,3 +58,4 @@ export type USER_ACTIONS =
     | SET_CLIENTS_LIST_LOADING_ACTION
     | SET_WORKERS_LIST_ACTION
     | SET_WORKERS_LIST_LOADING_ACTION
+    | SET_CREATE_USER_LOADING_ACTION
