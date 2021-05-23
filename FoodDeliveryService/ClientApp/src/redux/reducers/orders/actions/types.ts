@@ -1,13 +1,17 @@
 import {IOrder} from "../types.data";
-import {SET_CREATE_ORDER_LOADING_ACTION, SET_ORDERS_LIST_ACTION, SET_ORDERS_LIST_LOADING_ACTION} from "../types";
+import {
+    SET_CREATE_ORDER_LOADING_ACTION,
+    SET_ORDERS_LIST_ACTION,
+    SET_ORDERS_LIST_LOADING_ACTION
+} from "../types";
 import {TAddProductsToOrderBody, TCreateOrderBody, TGetClientOrders} from "../../../api/requests/orders/types.data";
 
 export interface ICreateOrder {
-    (payload: TCreateOrderBody): void
+    (payload: TCreateOrderBody, onSuccess?: () => void): void
 }
 
 export interface IAddProductsToOrder {
-    (payload: TAddProductsToOrderBody): void
+    (payload: TAddProductsToOrderBody[]): void
 }
 
 export interface IGetClientOrders {

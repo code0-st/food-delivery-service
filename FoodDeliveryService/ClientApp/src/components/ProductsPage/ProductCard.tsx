@@ -16,7 +16,9 @@ export const ProductCard: React.FC<IProductCardProps> = ({
                                                              setBasketProductList,
                                                          }) => {
     const {id, name, price, weight} = product
-    const [count, setCount] = useState<number>(0)
+    const [count, setCount] = useState<number>(basketProductList.find(item => item.id === id)
+        && basketProductList.find(item => item.id === id).count
+        || 0)
     const setBasketProductsHandler = (iterator: number) => {
         const existedProduct = !!basketProductList.find(item => item.id === id)
         existedProduct
@@ -31,7 +33,10 @@ export const ProductCard: React.FC<IProductCardProps> = ({
                     return item
                 })
                 .filter(item => item.count))
-            : setBasketProductList([...basketProductList.filter(item => item.count), {...product, count: count + iterator}])
+            : setBasketProductList([...basketProductList.filter(item => item.count), {
+                ...product,
+                count: count + iterator
+            }])
     }
     return (
         <Fade in timeout={{enter: 20 * index, exit: 50}}>

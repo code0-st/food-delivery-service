@@ -9,7 +9,7 @@ export const ProfileLink: React.FC<{ userName: string }> = ({
                                                                 userName = "test_man"
                                                             }) => {
     return (
-        <Link to={ROUTE_PATHS.profile}>
+        <Link to={ROUTE_PATHS.profile.path}>
             <div className={s.label_iconed}>
                 <UserIcon/>
                 {userName}

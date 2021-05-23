@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {TRootState} from "../../redux/store";
 import {connect} from "react-redux";
 import {setCurrentRootPage} from "../../redux/reducers/rootPage/actions/actions";
@@ -11,8 +11,9 @@ import {LoginLink} from "../common/IconedLabels/LoginLink";
 import {IClient, IWorker} from "../../redux/reducers/user/types.data";
 import {ProfileLink} from "../common/IconedLabels/ProfileLink";
 import {ShopBasketContainer} from "../common/ShopBasket/ShopBasket";
-import {getUserRole} from "../../helpers/helpers";
 import {CreateBasket} from "../common/IconedLabels/Basket";
+import {useLocation} from "react-router";
+import {ROUTE_PATHS} from "../../routers/paths.main";
 
 const s = require('./styles.module.scss')
 
@@ -29,6 +30,7 @@ const RootPage: React.FC<IRootPageProps> = ({
                                                 userInfo,
                                             }) => {
     const [open, setOpen] = useState<boolean>(false)
+
     return <div className={s.root}>
         <div className={s.root_header}>
             <div className={s.row}>

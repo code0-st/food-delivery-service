@@ -1,5 +1,5 @@
 import {config} from "../config";
-import {catalogPaths} from "./Catalog/path";
+import {catalogPaths} from "./Catalog/paths";
 
 const {catalogs} = config
 

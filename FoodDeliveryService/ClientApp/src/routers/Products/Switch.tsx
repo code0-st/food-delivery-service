@@ -3,7 +3,7 @@ import {Route, Switch} from "react-router-dom";
 import {ROUTE_PATHS} from "../paths.main";
 import {ProductsPageContainer} from "../../components/ProductsPage/ProductsPage";
 
-export const MainSwitch: React.FC = () => (
+export const ProductsSwitch: React.FC = () => (
     <Route exact={false}
            path={ROUTE_PATHS.products.path}>
         <Switch>

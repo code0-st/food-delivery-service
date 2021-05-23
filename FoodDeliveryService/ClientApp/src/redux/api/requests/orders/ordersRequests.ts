@@ -8,14 +8,14 @@ export const ordersRequests = () => ({
         createOrder: (body: TCreateOrderBody) => {
             return instanceAxiosClose(token).post(paths.orders, body)
         },
-        addProductsInOrder: (body: TAddProductsToOrderBody) => {
+        addProductsInOrder: (body: TAddProductsToOrderBody[]) => {
             return instanceAxiosClose(token).post(paths.productsInOrder, body)
         },
         getOrdersList: () => {
             return instanceAxiosClose(token).get(paths.orders)
         },
         getClientOrders: (body: TGetClientOrders) => {
-            return instanceAxiosClose(token).get(paths.orders)
+            return instanceAxiosClose(token).get(`${paths.orders}?clientId=${body.clientId}`)
         },
     }),
 })

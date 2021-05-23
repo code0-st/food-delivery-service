@@ -3,8 +3,8 @@ import {ROUTE_PATHS} from "../../../routers/paths.main";
 
 const initialState: TRootPageReducer = {
     internalPages: [
-        {id: 1, title: 'Главная', link: ROUTE_PATHS.main.main, isCurrent: true},
-        {id: 2, title: 'Меню', link: ROUTE_PATHS.menu.main, isCurrent: false},
+        {id: 1, title: 'Главная', link: ROUTE_PATHS.products.path, isCurrent: true},
+        {id: 2, title: 'Меню', link: ROUTE_PATHS.catalogs.path, isCurrent: false},
         {id: 3, title: 'Контакты', link: ROUTE_PATHS.contacts, isCurrent: false},
     ]
 }

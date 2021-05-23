@@ -1,5 +1,6 @@
 export type TCreateOrderBody = {
     clientId: string
+    products: TAddProductsToOrderBody[]
 }
 
 export type TAddProductsToOrderBody = {

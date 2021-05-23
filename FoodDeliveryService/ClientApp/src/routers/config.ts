@@ -1,4 +1,6 @@
 export const config = {
-    main: '/products',
-    menu: '/menu',
+    products: '/products',
+    catalogs: '/catalogs',
+    catalog: '/catalog',
+    profile: '/profile',
 }

@@ -1,11 +1,12 @@
-import {mainPaths} from "./Main/paths";
-import {menuPaths} from "./Menu/path";
+import {catalogsPaths} from "./Menu/paths";
+import {productsPaths} from "./Products/paths";
+import {profilePaths} from "./Profile/paths";
 
 export const ROUTE_PATHS = {
     login: '/login',
     signUp: '/sign-up',
-    profile: '/profile',
     contacts: '/contacts',
-    main: {...mainPaths},
-    menu: {...menuPaths}
+    products: {...productsPaths},
+    catalogs: {...catalogsPaths},
+    profile: {...profilePaths}
 }
