@@ -16,7 +16,6 @@ namespace FoodDeliveryService
         public Guid ClientId { get; set; }
         public int StatusId { get; set; }
         public int? PicUpPointId { get; set; }
-
         public virtual Client Client { get; set; }
         public virtual PicUpPoint PicUpPoint { get; set; }
         public virtual OrderStatus Status { get; set; }

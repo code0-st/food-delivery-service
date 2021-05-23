@@ -22,14 +22,28 @@ namespace FoodDeliveryService.Controllers
 
         // GET: api/Orders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrders(Guid clientId)
         {
-            var orders = _context.Orders
+            var orders = new List<Order>();
+            if (clientId.ToString() != "00000000-0000-0000-0000-000000000000")
+            {
+                orders = _context.Orders
+                    .Where(o => o.ClientId == clientId)
+                    .Include(o => o.Client)
+                    .Include(o => o.Status)
+                    .Include(o => o.PicUpPoint)
+                    .Include(o => o.ProductsInOrders)
+                    .ToList();
+            }
+            else
+            {
+                orders = _context.Orders
                 .Include(o => o.Client)
                 .Include(o => o.Status)
                 .Include(o => o.PicUpPoint)
                 .Include(o => o.ProductsInOrders)
                 .ToList();
+            }
 
             foreach (var order in orders)
             {
