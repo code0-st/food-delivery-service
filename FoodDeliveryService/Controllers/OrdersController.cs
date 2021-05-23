@@ -24,12 +24,32 @@ namespace FoodDeliveryService.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            return await _context.Orders
+            var orders = _context.Orders
                 .Include(o => o.Client)
                 .Include(o => o.Status)
                 .Include(o => o.PicUpPoint)
                 .Include(o => o.ProductsInOrders)
-                .ToListAsync();
+                .ToList();
+
+            foreach (var order in orders)
+            {
+                order.Client = new Client 
+                {
+                    Id = order.Client.Id,
+                    FirstName = order.Client.FirstName,
+                    LastName = order.Client.LastName,
+                    Patronymic = order.Client.Patronymic,
+                    Phone = order.Client.Phone,
+                    UserName = order.Client.UserName,
+                    Address = order.Client.Address
+                };
+                foreach (var product in order.ProductsInOrders)
+                {
+                    product.Product = _context.Products.Find(product.ProductId);
+                }
+            }
+
+            return orders;
         }
 
         // GET: api/Orders/5
@@ -80,17 +100,24 @@ namespace FoodDeliveryService.Controllers
         // POST: api/Orders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(Order order)
+        public int PostOrder(Order order)
         {
+            DateTime now = DateTime.Now;
+
             _context.Orders.Add(new Order 
             {
                 ClientId = order.ClientId,
                 StatusId = 1, // Принят в обаботку
-                DateCreated = DateTime.Now
+                DateCreated = now
             });
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
-            return CreatedAtAction("GetOrder", new { id = order.Id }, order);
+            int currentOrderId = _context.Orders
+                .Where(o => o.ClientId == order.ClientId && o.DateCreated == now)
+                .Select(o => o.Id)
+                .FirstOrDefault();
+
+            return currentOrderId;
         }
 
         // DELETE: api/Orders/5
