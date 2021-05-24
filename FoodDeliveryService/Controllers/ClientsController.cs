@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FoodDeliveryService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FoodDeliveryService.Controllers
 {
@@ -21,13 +22,25 @@ namespace FoodDeliveryService.Controllers
         }
 
         // GET: api/Clients
+        [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Client>>> GetClients()
+        public async Task<ActionResult<IEnumerable<Client>>> GetClients(string searchValue)
         {
-            return await _context.Clients.ToListAsync();
+            if(searchValue == null)
+            {
+                return await _context.Clients.ToListAsync();
+            }
+            else
+            {
+                return await _context.Clients
+                    .Where(c => c.FirstName == searchValue
+                             || c.LastName == searchValue
+                             || c.Patronymic == searchValue
+                             || c.UserName == searchValue)
+                    .ToListAsync();
+            }
         }
 
-        // GET: api/Clients/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Client>> GetClient(Guid id)
         {

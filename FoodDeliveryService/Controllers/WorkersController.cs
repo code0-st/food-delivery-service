@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FoodDeliveryService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FoodDeliveryService.Controllers
 {
@@ -20,17 +21,30 @@ namespace FoodDeliveryService.Controllers
             _context = context;
         }
 
-        // GET: api/Workers
+        [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Worker>>> GetWorkers()
+        public async Task<ActionResult<IEnumerable<Worker>>> GetWorkers(string searchValue)
         {
-            return await _context.Workers
+            if (searchValue == null)
+            {
+                return await _context.Workers
                 .Include(w => w.Department)
                 .Include(w => w.Position)
                 .ToListAsync();
+            } else
+            {
+                return await _context.Workers
+                    .Where(w => w.FirstName == searchValue
+                             || w.LastName == searchValue
+                             || w.Patronymic == searchValue
+                             || w.UserName == searchValue)
+                    .Include(w => w.Department)
+                    .Include(w => w.Position)
+                    .ToListAsync();
+            } 
         }
 
-        // GET: api/Workers/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Worker>> GetWorker(Guid id)
         {
@@ -47,8 +61,7 @@ namespace FoodDeliveryService.Controllers
             return worker;
         }
 
-        // PUT: api/Workers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWorker(Guid id, Worker worker)
         {
@@ -78,8 +91,7 @@ namespace FoodDeliveryService.Controllers
             return NoContent();
         }
 
-        // POST: api/Workers
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Worker>> PostWorker(Worker worker)
         {
@@ -119,7 +131,7 @@ namespace FoodDeliveryService.Controllers
             return CreatedAtAction("GetWorker", new { id = worker.Id }, worker);
         }
 
-        // DELETE: api/Workers/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWorker(Guid id)
         {

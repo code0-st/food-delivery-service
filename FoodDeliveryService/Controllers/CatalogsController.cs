@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,9 +21,15 @@ namespace FoodDeliveryService.Controllers
 
         // GET: api/Catalogs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Catalog>>> GetCatalogs()
+        public async Task<ActionResult<IEnumerable<Catalog>>> GetCatalogs(string searchValue)
         {
-            return await _context.Catalogs.ToListAsync();
+            if(searchValue == null)
+            {
+                return await _context.Catalogs.ToListAsync();
+            } else
+            {
+                return await _context.Catalogs.Where(c => c.Name.Contains(searchValue)).ToListAsync();
+            }
         }
 
         // GET: api/Catalogs/5
@@ -39,10 +46,9 @@ namespace FoodDeliveryService.Controllers
             return catalog;
         }
 
-        // PUT: api/Catalogs/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCatalog(int id, Catalog catalog)
+        public async Task<ActionResult<Catalog>> PutCatalog(int id, Catalog catalog)
         {
             if (id != catalog.Id)
             {
@@ -67,11 +73,10 @@ namespace FoodDeliveryService.Controllers
                 }
             }
 
-            return NoContent();
+            return CreatedAtAction("GetCatalog", new { id = catalog.Id }, catalog);
         }
 
-        // POST: api/Catalogs
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Catalog>> PostCatalog(Catalog catalog)
         {
@@ -81,7 +86,7 @@ namespace FoodDeliveryService.Controllers
             return CreatedAtAction("GetCatalog", new { id = catalog.Id }, catalog);
         }
 
-        // DELETE: api/Catalogs/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCatalog(int id)
         {

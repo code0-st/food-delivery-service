@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FoodDeliveryService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FoodDeliveryService.Controllers
 {
@@ -22,13 +23,35 @@ namespace FoodDeliveryService.Controllers
 
         // GET: api/Products/?catalogId=2
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts(int catalogId)
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts(int catalogId, string searchValue)
         {
             if (catalogId == 0)
             {
-                return await _context.Products.ToListAsync();
+                if(searchValue == null)
+                {
+                    return await _context.Products.ToListAsync();
+                }
+                else
+                {
+                    return await _context.Products
+                        .Where(p => p.Name.Contains(searchValue))
+                        .ToListAsync();
+                }
+            } else
+            {
+                if(searchValue == null)
+                {
+                    return await _context.Products
+                        .Where(p => p.CatalogId == catalogId)
+                        .ToListAsync();
+                }
+                else
+                {
+                    return await _context.Products
+                        .Where(p => p.CatalogId == catalogId && p.Name.Contains(searchValue))
+                        .ToListAsync();
+                }
             }
-            return await _context.Products.Where(p => p.CatalogId == catalogId).ToListAsync();
         }
 
         // GET: api/Products/5
@@ -45,10 +68,9 @@ namespace FoodDeliveryService.Controllers
             return product;
         }
 
-        // PUT: api/Products/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        public async Task<ActionResult<Product>> PutProduct(int id, Product product)
         {
             if (id != product.Id)
             {
@@ -73,10 +95,10 @@ namespace FoodDeliveryService.Controllers
                 }
             }
 
-            return NoContent();
+            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
 
-        // POST: api/Products
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
@@ -86,7 +108,7 @@ namespace FoodDeliveryService.Controllers
             return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
 
-        // DELETE: api/Products/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
