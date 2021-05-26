@@ -1,9 +1,9 @@
 import React from "react";
 import {ICatalogCardProps} from "./types";
-import {ImageIcon} from "../../icons/icons";
 import {Button, Fade} from "reactstrap";
 import {Link} from "react-router-dom";
-import {ROUTE_PATHS} from "../../routers/paths.main";
+import {ROUTE_PATHS} from "../../../routers/paths.main";
+import {ImageIcon} from "../../../icons/icons";
 
 const s = require('./styles.module.scss')
 

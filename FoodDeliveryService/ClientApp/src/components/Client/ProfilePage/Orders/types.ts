@@ -1,6 +1,6 @@
-import {IOrder, IProductInOrder} from "../../../redux/reducers/orders/types.data";
-import {IGetClientOrders} from "../../../redux/reducers/orders/actions/types";
-import {IClient, IWorker} from "../../../redux/reducers/user/types.data";
+import {IOrder, IProductInOrder} from "../../../../redux/reducers/orders/types.data";
+import {IGetClientOrders} from "../../../../redux/reducers/orders/actions/types";
+import {IClient, IWorker} from "../../../../redux/reducers/user/types.data";
 
 export interface IOrdersProps {
     userInfo: IClient | IWorker | null

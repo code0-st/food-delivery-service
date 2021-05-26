@@ -1,8 +1,8 @@
 import React from "react";
 import {Route, Switch} from "react-router-dom";
 import {ROUTE_PATHS} from "../paths.main";
-import {CatalogsPageContainer} from "../../components/CatalogsPage/CatalogsPage";
 import {CatalogSwitch} from "./Catalog/Switch";
+import {CatalogsPageContainer} from "../../components/Client/CatalogsPage/CatalogsPage";
 
 export const CatalogsSwitch: React.FC = () => (
     <Switch>

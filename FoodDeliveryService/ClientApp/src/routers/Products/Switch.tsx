@@ -1,7 +1,7 @@
 import React from "react";
 import {Route, Switch} from "react-router-dom";
 import {ROUTE_PATHS} from "../paths.main";
-import {ProductsPageContainer} from "../../components/ProductsPage/ProductsPage";
+import {ProductsPageContainer} from "../../components/Client/ProductsPage/ProductsPage";
 
 export const ProductsSwitch: React.FC = () => (
     <Route exact={false}

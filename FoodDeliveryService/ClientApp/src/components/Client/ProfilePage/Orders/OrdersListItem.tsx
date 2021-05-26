@@ -1,9 +1,9 @@
 import React, {createRef, useState} from "react";
 import {IOrdersListItemProps} from "./types";
 import {Collapse, Fade} from "reactstrap";
-import {formatIsoToDate, formatIsoToTime} from "../../../utils/utils";
+import {formatIsoToDate, formatIsoToTime} from "../../../../utils/utils";
 import {OrderFullInfo} from "./OrderFullInfo";
-import {BasketProductItem} from "../../common/ShopBasket/BasketProductItem";
+import {BasketProductItem} from "../../../common/ShopBasket/BasketProductItem";
 
 const s = require('./styles.module.scss')
 

@@ -1,5 +1,5 @@
 import React from "react";
-import {TRootState} from "../../redux/store";
+import {TRootState} from "../../../redux/store";
 import {connect} from "react-redux";
 
 const s = require('./styles.module.scss')

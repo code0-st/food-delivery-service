@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {IOrdersProps} from "./types";
-import {TRootState} from "../../../redux/store";
+import {TRootState} from "../../../../redux/store";
 import {connect} from "react-redux";
-import {getClientOrdersList} from "../../../redux/reducers/orders/actions";
-import {Loading} from "../../common/Loading/Loading";
+import {getClientOrdersList} from "../../../../redux/reducers/orders/actions";
+import {Loading} from "../../../common/Loading/Loading";
 import {OrdersListItem} from "./OrdersListItem";
 
 const s = require('./styles.module.scss')

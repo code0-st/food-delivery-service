@@ -1,8 +1,8 @@
 import React from "react";
 import {Redirect, Route, Switch} from "react-router";
 import {ROUTE_PATHS} from "../paths.main";
-import {ProfilePageContainer} from "../../components/ProfilePage/ProfilePage";
-import {OrdersContainer} from "../../components/ProfilePage/Orders/Orders";
+import {ProfilePageContainer} from "../../components/Client/ProfilePage/ProfilePage";
+import {OrdersContainer} from "../../components/Client/ProfilePage/Orders/Orders";
 
 export const ProfileSwitch = () => {
     return (

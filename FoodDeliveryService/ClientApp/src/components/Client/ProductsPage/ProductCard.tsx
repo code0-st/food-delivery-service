@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {IProductCardProps} from "./types";
-import {ImageIcon, WeightIcon} from "../../icons/icons";
+import {ImageIcon, WeightIcon} from "../../../icons/icons";
 import {Fade} from "reactstrap";
-import {SimpleButton} from "../common/Fields/Buttons/SimpleButton";
-import {TRootState} from "../../redux/store";
+import {SimpleButton} from "../../common/Fields/Buttons/SimpleButton";
+import {TRootState} from "../../../redux/store";
 import {connect} from "react-redux";
-import {setBasketProductList} from "../../redux/reducers/shopBasket/actions/actions";
+import {setBasketProductList} from "../../../redux/reducers/shopBasket/actions/actions";
 
 const s = require('./styles.module.scss')
 

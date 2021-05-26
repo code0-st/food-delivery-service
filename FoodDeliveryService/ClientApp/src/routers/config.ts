@@ -3,4 +3,5 @@ export const config = {
     catalogs: '/catalogs',
     catalog: '/catalog',
     profile: '/profile',
+    worker: '/worker',
 }

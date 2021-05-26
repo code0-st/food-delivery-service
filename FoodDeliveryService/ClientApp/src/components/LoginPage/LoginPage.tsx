@@ -29,7 +29,9 @@ const LoginPage: React.FC<ILoginPageProps> = ({
     return (
         <div className={s.root}>
             <div className={s.form_field}>
-                <CreateLogo/>
+                <div className={s.logo}>
+                    <CreateLogo/>
+                </div>
                 <SimpleInput label={'Логин'}
                              value={username}
                              onChange={event => setUsername(event.target.value)}/>

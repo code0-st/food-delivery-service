@@ -1,10 +1,10 @@
 import React, {useEffect} from "react";
 import {ICatalogsPageProps} from "./types";
-import {TRootState} from "../../redux/store";
 import {connect} from "react-redux";
-import {getCatalogsAsync} from "../../redux/reducers/enums/actions";
 import {CatalogCard} from "./CatalogCard";
-import {Loading} from "../common/Loading/Loading";
+import {Loading} from "../../common/Loading/Loading";
+import {TRootState} from "../../../redux/store";
+import {getCatalogsAsync} from "../../../redux/reducers/enums/actions";
 
 const s = require('./styles.module.scss')
 const CatalogsPage: React.FC<ICatalogsPageProps> = ({

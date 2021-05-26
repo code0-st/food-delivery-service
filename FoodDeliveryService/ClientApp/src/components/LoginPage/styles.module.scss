@@ -6,7 +6,10 @@
   justify-content: center;
   background: rgba(0, 0, 0, 0.3);
 }
-
+.logo {
+  padding-top: 40px;
+  position: relative;
+}
 .form_field {
   display: flex;
   flex-direction: column;

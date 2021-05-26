@@ -50,7 +50,9 @@ const SignUpPage: React.FC<ISignUpPageProps> = ({
     return (
         <div className={s.root}>
             <div className={s.form_field}>
-                <CreateLogo/>
+                <div className={s.logo}>
+                    <CreateLogo/>
+                </div>
                 <div className={s.row}>
                     <SimpleInput label={'Фамилия'}
                                  value={lastName}

@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {IProductsPageProps} from "./types";
-import {TRootState} from "../../redux/store";
+import {TRootState} from "../../../redux/store";
 import {connect} from "react-redux";
-import {getProductsListAsync, getProductsListByCatalogAsync} from "../../redux/reducers/products/actions";
-import {Loading} from "../common/Loading/Loading";
+import {getProductsListAsync, getProductsListByCatalogAsync} from "../../../redux/reducers/products/actions";
+import {Loading} from "../../common/Loading/Loading";
 import {ProductCardContainer} from "./ProductCard";
 import {Pagination} from "@material-ui/lab";
 import {withRouter} from "react-router";

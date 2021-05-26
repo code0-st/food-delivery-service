@@ -8,9 +8,11 @@ import {TRootState} from "../redux/store";
 import {connect} from "react-redux";
 import {Loading} from "../components/common/Loading/Loading";
 import {SignUpPageContainer} from "../components/LoginPage/SignUpPage";
-import {ContactsPage} from "../components/ContactsPage/ContactsPage";
+import {ContactsPage} from "../components/Client/ContactsPage/ContactsPage";
 import {ProductsSwitch} from "./Products/Switch";
 import {ProfileSwitch} from "./Profile/Switch";
+import {getUserRole} from "../helpers/helpers";
+import {WorkerSwitchContainer} from "./Worker/Switch";
 
 const s = require('./styles.module.scss')
 
@@ -31,7 +33,9 @@ export const RouterIndex: React.FC<{ appLoading: boolean }> = ({
                 <Switch>
                     <Route exact
                            path={'/'}
-                           render={() => <Redirect to={ROUTE_PATHS.products.path}/>}/>
+                           render={() => getUserRole() === 'worker'
+                               ? <Redirect to={ROUTE_PATHS.worker.path}/>
+                               : <Redirect to={ROUTE_PATHS.products.path}/>}/>
                     <Route path={ROUTE_PATHS.login}
                            exact
                            component={LoginPageContainer}/>
@@ -45,6 +49,7 @@ export const RouterIndex: React.FC<{ appLoading: boolean }> = ({
                                path={ROUTE_PATHS.contacts}
                                component={ContactsPage}/>
                         <ProfileSwitch/>
+                        <WorkerSwitchContainer />
                     </RootPageContainer>
                 </Switch>
             </Suspense>

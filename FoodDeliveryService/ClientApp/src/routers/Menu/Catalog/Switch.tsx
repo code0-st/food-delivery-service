@@ -1,6 +1,6 @@
 import React from "react";
 import {Route, Switch} from "react-router";
-import {ProductsPageContainer} from "../../../components/ProductsPage/ProductsPage";
+import {ProductsPageContainer} from "../../../components/Client/ProductsPage/ProductsPage";
 import {catalogPaths} from "./paths";
 
 export const CatalogSwitch = () => {
