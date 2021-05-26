@@ -8,8 +8,8 @@ import {OrdersPageContainer} from "../../components/Worker/OrdersPage/OrdersPage
 import {ISetCreateModalOpen} from "../../redux/reducers/rootPage/actions/types";
 import {setCreateModalOpen} from "../../redux/reducers/rootPage/actions/actions";
 import {ClientsPageContainer} from "../../components/Worker/ClientsPage/ClientsPage";
-import {CatalogsPageContainer} from "../../components/Worker/CatalogsPage/CatalogsPage";
-import {ProductsPageContainer} from "../../components/Worker/ProductsPage/ProductsPage";
+import {CatalogsPageWorkerContainer} from "../../components/Worker/CatalogsPage/CatalogsPage";
+import {ProductsPageWorkerContainer} from "../../components/Worker/ProductsPage/ProductsPage";
 import {WorkersPageContainer} from "../../components/Worker/WorkersPage/WorkersPage";
 
 interface IWorkerSwitch {
@@ -42,12 +42,12 @@ const WorkerSwitch: React.FC<IWorkerSwitch> = ({
                                                               closeCreateModalHandler={() => setCreateModalOpen(false)}/>}/>
                 <Route path={ROUTE_PATHS.worker.catalogs}
                        exact
-                       component={() => <CatalogsPageContainer searchValue={searchValue}
+                       component={() => <CatalogsPageWorkerContainer searchValue={searchValue}
                                                                createModalOpen={createModalOpen}
                                                                closeCreateModalHandler={() => setCreateModalOpen(false)}/>}/>
                 <Route path={ROUTE_PATHS.worker.products}
                        exact
-                       component={() => <ProductsPageContainer searchValue={searchValue}
+                       component={() => <ProductsPageWorkerContainer searchValue={searchValue}
                                                                createModalOpen={createModalOpen}
                                                                closeCreateModalHandler={() => setCreateModalOpen(false)}/>}/>
                 <Route path={ROUTE_PATHS.worker.workers}

@@ -6,8 +6,9 @@ import {ReactComponent as ImageIcon} from "./ImageIcon.svg";
 import {ReactComponent as WeightIcon} from "./WeightIcon.svg";
 import {ReactComponent as ShopBasketIcon} from "./ShopBasketIcon.svg";
 import {ReactComponent as CloseIcon} from "./CloseIcon.svg";
+import {ReactComponent as ExitIcon} from "./ExitIcon.svg";
 
 export {
     HamburgerIcon, CopyrightIcon, LoginIcon, UserIcon, ImageIcon, WeightIcon, ShopBasketIcon,
-    CloseIcon,
+    CloseIcon, ExitIcon,
 }

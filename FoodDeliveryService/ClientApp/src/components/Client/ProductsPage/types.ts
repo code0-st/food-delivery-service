@@ -8,6 +8,7 @@ export interface IProductsPageProps {
     productsListLoading: boolean
     getProductsListAsync: any
     getProductsListByCatalogAsync: any
+    fromWorker?: boolean
     [key: string]: any
 }
 export interface IProductCardProps {
@@ -15,4 +16,5 @@ export interface IProductCardProps {
     index: number
     basketProductList: IBasketProductItem[]
     setBasketProductList: ISetBasketProductList
+    fromWorker?: boolean
 }

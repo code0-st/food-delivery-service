@@ -43,12 +43,25 @@
   }
 }
 
+.exit {
+  cursor: pointer;
+  position: absolute;
+  height: 56px;
+  top: 70%;
+  transform: translate(0px, -50%);
+  right: 60px;
+
+  & svg {
+    width: 46px !important;
+    height: 35px !important;
+  }
+}
 .basket {
   cursor: pointer;
   position: absolute;
   height: 56px;
   top: 60%;
-  right: 60px;
+  right: 130px;
   transform: translate(0px, -50%);
 
   & svg {

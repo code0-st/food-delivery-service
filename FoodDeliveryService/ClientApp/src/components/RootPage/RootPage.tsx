@@ -13,6 +13,7 @@ import {ProfileLink} from "../common/IconedLabels/ProfileLink";
 import {ShopBasketContainer} from "../common/ShopBasket/ShopBasket";
 import {CreateBasket} from "../common/IconedLabels/Basket";
 import {getUserRole} from "../../helpers/helpers";
+import {CreateExit, CreateExitContainer} from "../common/IconedLabels/Exit";
 
 const s = require('./styles.module.scss')
 
@@ -44,6 +45,7 @@ const RootPage: React.FC<IRootPageProps> = ({
                     ? <ProfileLink userName={userInfo.userName}/>
                     : <LoginLink/>}
                 {getUserRole() === 'client' && <CreateBasket onClick={() => setOpen(true)}/>}
+                {userInfo && <CreateExitContainer />}
             </div>
         </div>
         {children}

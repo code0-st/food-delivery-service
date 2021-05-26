@@ -16,8 +16,10 @@ const ProductsPage: React.FC<IProductsPageProps> = ({
                                                         getProductsListByCatalogAsync,
                                                         productsList,
                                                         productsListLoading,
+                                                        fromWorker,
                                                         ...props
                                                     }) => {
+    debugger
     const catalogId = props.match.params.id
     useEffect(() => {
         if (catalogId) {
@@ -48,6 +50,7 @@ const ProductsPage: React.FC<IProductsPageProps> = ({
                             if (index < PAGE_SIZE * currentPage) {
                                 return <ProductCardContainer key={item.id}
                                                              product={item}
+                                                             fromWorker={fromWorker}
                                                              index={index}/>
                             }
                         })}

@@ -4,7 +4,7 @@ import {
     setClientsListLoading,
     setCreateUserLoading,
     setUserInfo,
-    setUserInfoLoading,
+    setUserInfoLoading, setWorkersList,
     setWorkersListLoading
 } from "./actions";
 import {instance} from "../../../api";
@@ -63,7 +63,7 @@ export const getWorkersListAsync = () => async (dispatch: any) => {
     dispatch(setWorkersListLoading(true))
     try {
         const res = await instance().close().getWorkersList()
-        dispatch(setWorkersListLoading(res.data))
+        dispatch(setWorkersList(res.data))
     } catch (e) {
         console.log(e)
     }
