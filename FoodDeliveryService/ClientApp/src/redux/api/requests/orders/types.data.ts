@@ -12,3 +12,13 @@ export type TAddProductsToOrderBody = {
 export type TGetClientOrders = {
     clientId: string
 }
+
+export type TGetOrdersSorted = {
+    isAsc: boolean
+    field: 'Id' | 'DateCreated' | 'Status'
+}
+
+export type TSetOrderStatus = {
+    id: number
+    statusId: number
+}

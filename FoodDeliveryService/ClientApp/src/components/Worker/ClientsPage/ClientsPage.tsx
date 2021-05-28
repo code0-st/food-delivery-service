@@ -6,8 +6,11 @@ import {Loading} from "../../common/Loading/Loading";
 import {makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import {Pagination} from "@material-ui/lab";
 import {setClientsList} from "../../../redux/reducers/user/actions/actions";
-import {getClientsListAsync} from "../../../redux/reducers/user/actions";
+import {getClientsListAsync, getSortedClientsAsync} from "../../../redux/reducers/user/actions";
 import {IClient} from "../../../redux/reducers/user/types.data";
+import {TGetSortedClients} from "../../../redux/api/requests/user/types.data";
+import {SimpleInput} from "../../common/Fields/Inputs/SimpleInput";
+import {SimpleButton} from "../../common/Fields/Buttons/SimpleButton";
 
 const s = require('../style.module.scss')
 
@@ -16,9 +19,10 @@ const ClientsPage: React.FC<IClientsPageProps> = ({
                                                       setClientsList,
                                                       clientsListLoading,
                                                       getClientsListAsync,
+                                                      getSortedClientsAsync,
                                                   }) => {
     useEffect(() => {
-        getClientsListAsync()
+        getClientsListAsync({})
         return () => {
             setClientsList([])
         }
@@ -26,21 +30,54 @@ const ClientsPage: React.FC<IClientsPageProps> = ({
     const PAGE_SIZE = 10
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [pageCount, setPageCount] = useState<number>(1)
+
+    const [searchValue, setSearchValue] = useState<string>('')
+    const [sortBody, setSortBody] = useState<TGetSortedClients | null>(null)
+
+    const searchHandler = () => {
+        if(searchValue) {
+            getClientsListAsync({searchValue})
+        } else {
+            getClientsListAsync({})
+        }
+    }
     useEffect(() => {
         if (clientsList.length) {
             setPageCount(Math.ceil(clientsList.length / PAGE_SIZE))
         }
     }, [clientsList])
+
+    useEffect(() => {
+        if (sortBody) {
+            getSortedClientsAsync(sortBody)
+        }
+    }, [sortBody])
     return (
         <div className={s.worker_page}>
+            <div className={s.actions}>
+                <div className={s.actions_search}>
+                    <SimpleInput label={'Поиск'}
+                                 value={searchValue}
+                                 onChange={event => setSearchValue(event.target.value)}/>
+                </div>
+                <SimpleButton onClick={searchHandler}>
+                    Поиск
+                </SimpleButton>
+            </div>
             {clientsListLoading
                 ? <Loading/>
                 : clientsList && clientsList.length && <TableContainer component={Paper}>
                 <Table stickyHeader aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Фамилия</TableCell>
-                            <TableCell>Имя</TableCell>
+                            <TableCell onClick={() => setSortBody({
+                                isAsc: sortBody ? !sortBody.isAsc : true,
+                                sortState: 'LastName',
+                            })}>Фамилия</TableCell>
+                            <TableCell onClick={() => setSortBody({
+                                isAsc: sortBody ? !sortBody.isAsc : true,
+                                sortState: 'FirstName',
+                            })}>Имя</TableCell>
                             <TableCell>Ник</TableCell>
                             <TableCell>Телефон</TableCell>
                             <TableCell>Адрес</TableCell>
@@ -77,6 +114,7 @@ const mapStateToProps = (state: TRootState) => ({
 const mapDispatchToProps = {
     getClientsListAsync,
     setClientsList,
+    getSortedClientsAsync,
 }
 
 export const ClientsPageContainer = connect(mapStateToProps, mapDispatchToProps)(ClientsPage)

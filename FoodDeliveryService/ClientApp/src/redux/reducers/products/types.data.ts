@@ -3,4 +3,5 @@ export interface IProduct {
     name: string
     price: number
     weight: number
+    catalogId: number
 }

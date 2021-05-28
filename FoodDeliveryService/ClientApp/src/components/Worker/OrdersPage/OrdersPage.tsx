@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {TRootState} from "../../../redux/store";
 import {connect} from "react-redux";
 import {IOrdersPageProps} from "../types";
-import {getOrdersListAsync} from "../../../redux/reducers/orders/actions";
+import {getOrdersListAsync, getOrdersListSorted, setOrderStatusAsync} from "../../../redux/reducers/orders/actions";
 import {Loading} from "../../common/Loading/Loading";
 import {setOrdersList} from "../../../redux/reducers/orders/actions/actions";
 import {
@@ -22,6 +22,11 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import {IOrder} from "../../../redux/reducers/orders/types.data";
 import {formatIsoToDate, formatIsoToTime} from "../../../utils/utils";
 import {Pagination} from "@material-ui/lab";
+import {TGetOrdersSorted} from "../../../redux/api/requests/orders/types.data";
+import {SimpleSelect} from "../../common/Fields/Selects/SimpleSelect";
+import {TEnumItem} from "../../../redux/reducers/enums/types.data";
+import clsx from "clsx";
+import {ISetOrderStatus} from "../../../redux/reducers/orders/actions/types";
 
 const s = require('../style.module.scss')
 
@@ -33,6 +38,9 @@ const OrdersPage: React.FC<IOrdersPageProps> = ({
                                                     createModalOpen,
                                                     closeCreateModalHandler,
                                                     setOrdersList,
+                                                    getOrdersListSorted,
+                                                    orderStatuses,
+                                                    setOrderStatusAsync,
                                                 }) => {
     useEffect(() => {
         getOrdersListAsync()
@@ -40,16 +48,23 @@ const OrdersPage: React.FC<IOrdersPageProps> = ({
             setOrdersList([])
         }
     }, [])
-    const PAGE_SIZE = 6
+    const PAGE_SIZE = 8
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [pageCount, setPageCount] = useState<number>(1)
+    const [sortBody, setSortBody] = useState<TGetOrdersSorted | null>(null)
+
     useEffect(() => {
         if (ordersList.length) {
             setPageCount(Math.ceil(ordersList.length / PAGE_SIZE))
         }
     }, [ordersList])
+    useEffect(() => {
+        if (sortBody) {
+            getOrdersListSorted(sortBody)
+        }
+    }, [sortBody])
     return (
-        <div className={s.worker_page}>
+        <div className={clsx(s.worker_page, !ordersListLoading && s.worker_page_scroll)}>
             {ordersListLoading
                 ? <Loading/>
                 : ordersList && ordersList.length && <TableContainer component={Paper}>
@@ -57,13 +72,23 @@ const OrdersPage: React.FC<IOrdersPageProps> = ({
                     <TableHead>
                         <TableRow>
                             <TableCell/>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Дата создания</TableCell>
+                            <TableCell onClick={() => setSortBody({
+                                isAsc: sortBody ? !sortBody.isAsc : true,
+                                field: "Id",
+                            })}>ID</TableCell>
+                            <TableCell onClick={() => setSortBody({
+                                isAsc: sortBody ? !sortBody.isAsc : true,
+                                field: "DateCreated",
+                            })}>Дата создания</TableCell>
                             <TableCell>Дата закрытия</TableCell>
                             <TableCell>Стоимость</TableCell>
-                            <TableCell>Статус</TableCell>
+                            <TableCell onClick={() => setSortBody({
+                                isAsc: sortBody ? !sortBody.isAsc : true,
+                                field: "Status",
+                            })}>Статус</TableCell>
                             <TableCell>Клиент</TableCell>
                             <TableCell>Адрес</TableCell>
+                            <TableCell size={"medium"}/>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -71,7 +96,10 @@ const OrdersPage: React.FC<IOrdersPageProps> = ({
                             .filter((item, index) => index >= PAGE_SIZE * (currentPage - 1) && index < PAGE_SIZE * currentPage)
                             .map((row, index) => {
                                     if (index < PAGE_SIZE * currentPage) {
-                                        return <Row key={row.id} row={row}/>
+                                        return <Row key={row.id}
+                                                    row={row}
+                                                    setOrderStatusAsync={setOrderStatusAsync}
+                                                    orderStatuses={orderStatuses}/>
 
                                     }
                                 }
@@ -91,12 +119,15 @@ const OrdersPage: React.FC<IOrdersPageProps> = ({
 }
 
 const mapStateToProps = (state: TRootState) => ({
+    orderStatuses: state.enums.orderStatuses,
     ordersList: state.orders.ordersList,
     ordersListLoading: state.orders.loadings.ordersListLoading,
 })
 const mapDispatchToProps = {
     getOrdersListAsync,
     setOrdersList,
+    getOrdersListSorted,
+    setOrderStatusAsync,
 }
 
 export const OrdersPageContainer = connect(mapStateToProps, mapDispatchToProps)(OrdersPage)
@@ -109,14 +140,24 @@ const useRowStyles = makeStyles({
     },
 });
 
-function Row(props: { row: IOrder }) {
-    const {row} = props;
+function Row(props: { row: IOrder, orderStatuses: TEnumItem[], setOrderStatusAsync: ISetOrderStatus }) {
+    const {row, orderStatuses, setOrderStatusAsync} = props;
     const [open, setOpen] = React.useState(false);
+    const [selectedStatusId, setSelectedStatusId] = useState<number | null>(null)
     const classes = useRowStyles();
 
     const summary = row.productsInOrders.reduce((previousValue, currentValue) => {
         return previousValue + currentValue.count * currentValue.product.price
     }, 0)
+
+    useEffect(() => {
+        if(selectedStatusId) {
+            setOrderStatusAsync({
+                id: row.id,
+                statusId: selectedStatusId
+            })
+        }
+    }, [selectedStatusId])
 
     return (
         <React.Fragment>
@@ -138,9 +179,14 @@ function Row(props: { row: IOrder }) {
                 <TableCell>{row.status.name}</TableCell>
                 <TableCell>{row.client.lastName + ' ' + row.client.firstName}</TableCell>
                 <TableCell>{row.client.address}</TableCell>
+                <TableCell>
+                    <SimpleSelect value={selectedStatusId}
+                                  items={orderStatuses}
+                                  onChange={setSelectedStatusId}/>
+                </TableCell>
             </TableRow>
             <TableRow>
-                <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={8}>
+                <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={9}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Table size="medium" aria-label="purchases">
                             <TableHead>

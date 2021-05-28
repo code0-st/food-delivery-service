@@ -9,13 +9,19 @@ export const paths = {
     },
     workers: {
         me: 'api/workers/me',
-        list: 'api/workers'
+        list: 'api/workers',
+        sort: 'api/workers/sort'
     },
     clients: {
         me: 'api/clients/me',
-        list: 'api/clients'
+        list: 'api/clients',
+        sort: 'api/clients/sort'
     },
     products: 'api/products',
-    orders: 'api/orders',
+    orders: {
+        list: 'api/orders',
+        sort: 'api/orders/sort',
+        status: 'api/orders/status',
+    },
     productsInOrder: '/api/ProductsInOrders',
 }

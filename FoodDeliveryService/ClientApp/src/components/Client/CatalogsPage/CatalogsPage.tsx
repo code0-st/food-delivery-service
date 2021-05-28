@@ -11,6 +11,7 @@ const CatalogsPage: React.FC<ICatalogsPageProps> = ({
                                                         catalogs,
                                                         catalogsLoading,
                                                         getCatalogsAsync,
+                                                        fromWorker,
                                                     }) => {
     useEffect(() => {
         getCatalogsAsync()
@@ -18,13 +19,14 @@ const CatalogsPage: React.FC<ICatalogsPageProps> = ({
     return (
         <div className={s.content}>
             {catalogsLoading
-                ? <Loading />
+                ? <Loading/>
                 : <div className={s.content_body}>
                     {catalogs
                     && catalogs.length > 0
                     && catalogs.map((item, index) => <CatalogCard key={item.id}
-                                                                                    catalog={item}
-                                                                                    index={index}/>)}
+                                                                  catalog={item}
+                                                                  fromWorker={fromWorker}
+                                                                  index={index}/>)}
                 </div>}
         </div>
     )

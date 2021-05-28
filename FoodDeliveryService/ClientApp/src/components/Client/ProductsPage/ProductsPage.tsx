@@ -19,7 +19,6 @@ const ProductsPage: React.FC<IProductsPageProps> = ({
                                                         fromWorker,
                                                         ...props
                                                     }) => {
-    debugger
     const catalogId = props.match.params.id
     useEffect(() => {
         if (catalogId) {

@@ -11,5 +11,6 @@ export const instanceAxiosClose = (token: string | null) =>
         baseURL: paths.baseUrl,
         headers: {
             Authorization: `Bearer ${token}`,
+            ContentTye: 'application/json'
         }
     })

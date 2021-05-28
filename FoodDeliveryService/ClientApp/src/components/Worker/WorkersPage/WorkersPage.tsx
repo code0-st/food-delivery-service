@@ -5,9 +5,13 @@ import {IWorkersPageProps} from "../types";
 import {Loading} from "../../common/Loading/Loading";
 import {makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import {Pagination} from "@material-ui/lab";
-import {getWorkersListAsync} from "../../../redux/reducers/user/actions";
+import {getSortedWorkersAsync, getWorkersListAsync} from "../../../redux/reducers/user/actions";
 import {setWorkersList} from "../../../redux/reducers/user/actions/actions";
 import {IWorker} from "../../../redux/reducers/user/types.data";
+import {TGetSortedClients, TGetSortedWorkers} from "../../../redux/api/requests/user/types.data";
+import {SimpleInput} from "../../common/Fields/Inputs/SimpleInput";
+import {SimpleButton} from "../../common/Fields/Buttons/SimpleButton";
+import {CreateWorkerModalContainer} from "./Modals/CreateWorkerModal";
 
 const s = require('../style.module.scss')
 
@@ -16,9 +20,10 @@ const WorkersPage: React.FC<IWorkersPageProps> = ({
                                                       workersListLoading,
                                                       setWorkersList,
                                                       getWorkersListAsync,
+                                                      getSortedWorkersAsync,
                                                   }) => {
     useEffect(() => {
-        getWorkersListAsync()
+        getWorkersListAsync({})
         return () => {
             setWorkersList([])
         }
@@ -26,25 +31,69 @@ const WorkersPage: React.FC<IWorkersPageProps> = ({
     const PAGE_SIZE = 10
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [pageCount, setPageCount] = useState<number>(1)
+
+    const [searchValue, setSearchValue] = useState<string>('')
+    const [sortBody, setSortBody] = useState<TGetSortedWorkers | null>(null)
+    const [createWorkerModal, setCreateWorkerModal] = useState<boolean>(false)
+
+    const searchHandler = () => {
+        if (searchValue) {
+            getWorkersListAsync({searchValue})
+        } else {
+            getWorkersListAsync({})
+        }
+    }
+
     useEffect(() => {
         if (workersList.length) {
             setPageCount(Math.ceil(workersList.length / PAGE_SIZE))
         }
     }, [workersList])
+
+    useEffect(() => {
+        if (sortBody) {
+            getSortedWorkersAsync(sortBody)
+        }
+    }, [sortBody])
     return (
         <div className={s.worker_page}>
+            <div className={s.actions}>
+                <div className={s.actions_search}>
+                    <SimpleInput label={'Поиск'}
+                                 value={searchValue}
+                                 onChange={event => setSearchValue(event.target.value)}/>
+                </div>
+                <SimpleButton onClick={searchHandler}>
+                    Поиск
+                </SimpleButton>
+                <SimpleButton onClick={() => setCreateWorkerModal(true)}>
+                    Создать
+                </SimpleButton>
+            </div>
             {workersListLoading
                 ? <Loading/>
                 : workersList && workersList.length && <TableContainer component={Paper}>
                 <Table stickyHeader aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Фамилия</TableCell>
-                            <TableCell>Имя</TableCell>
+                            <TableCell onClick={() => setSortBody({
+                                isAsc: sortBody ? !sortBody.isAsc : true,
+                                sortField: 'LastName',
+                            })}>Фамилия</TableCell>
+                            <TableCell onClick={() => setSortBody({
+                                isAsc: sortBody ? !sortBody.isAsc : true,
+                                sortField: 'FirstName',
+                            })}>Имя</TableCell>
                             <TableCell>Отчество</TableCell>
                             <TableCell>Телефон</TableCell>
-                            <TableCell>Отдел</TableCell>
-                            <TableCell>Должность</TableCell>
+                            <TableCell onClick={() => setSortBody({
+                                isAsc: sortBody ? !sortBody.isAsc : true,
+                                sortField: 'Department',
+                            })}>Отдел</TableCell>
+                            <TableCell onClick={() => setSortBody({
+                                isAsc: sortBody ? !sortBody.isAsc : true,
+                                sortField: 'Position',
+                            })}>Должность</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -67,6 +116,8 @@ const WorkersPage: React.FC<IWorkersPageProps> = ({
                             variant="outlined"
                             shape="rounded"/>
             </div>
+            <CreateWorkerModalContainer open={createWorkerModal}
+                                        closeHandler={() => setCreateWorkerModal(false)} />
         </div>
     )
 }
@@ -78,6 +129,7 @@ const mapStateToProps = (state: TRootState) => ({
 const mapDispatchToProps = {
     getWorkersListAsync,
     setWorkersList,
+    getSortedWorkersAsync,
 }
 
 export const WorkersPageContainer = connect(mapStateToProps, mapDispatchToProps)(WorkersPage)
@@ -100,7 +152,7 @@ function Row(props: { row: IWorker }) {
                 <TableCell>{row.lastName}</TableCell>
                 <TableCell>{row.firstName}</TableCell>
                 <TableCell>{row.patronymic}</TableCell>
-                <TableCell>{row.workPhone}</TableCell>
+                <TableCell>{row.phone}</TableCell>
                 <TableCell>{row.department.name}</TableCell>
                 <TableCell>{row.position.name}</TableCell>
             </TableRow>

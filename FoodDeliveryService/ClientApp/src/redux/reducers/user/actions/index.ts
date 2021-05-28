@@ -1,4 +1,11 @@
-import {ICreateClient, ICreateWorker, IRequestUserInfo} from "./types";
+import {
+    ICreateClient,
+    ICreateWorker,
+    IGetSearchUsers,
+    IGetSortedClients,
+    IGetSortedWorkers,
+    IRequestUserInfo
+} from "./types";
 import {
     setClientsList,
     setClientsListLoading,
@@ -8,8 +15,6 @@ import {
     setWorkersListLoading
 } from "./actions";
 import {instance} from "../../../api";
-import {history} from "../../../../index";
-import {ROUTE_PATHS} from "../../../../routers/paths.main";
 import {loginAsync} from "../../auth/actions";
 
 export const getUserInfoAsync: IRequestUserInfo = (id, role) => async (dispatch: any) => {
@@ -48,10 +53,10 @@ export const createWorkerAsync: ICreateWorker = (payload) => async (dispatch: an
     dispatch(setCreateUserLoading(false))
 }
 
-export const getClientsListAsync = () => async (dispatch: any) => {
+export const getClientsListAsync: IGetSearchUsers = payload => async (dispatch: any) => {
     dispatch(setClientsListLoading(true))
     try {
-        const res = await instance().close().getClientsList()
+        const res = await instance().close().getClientsList(payload)
         await dispatch(setClientsList(res.data))
     } catch (e) {
         console.log(e)
@@ -59,13 +64,37 @@ export const getClientsListAsync = () => async (dispatch: any) => {
     dispatch(setClientsListLoading(false))
 }
 
-export const getWorkersListAsync = () => async (dispatch: any) => {
+export const getWorkersListAsync: IGetSearchUsers = payload => async (dispatch: any) => {
     dispatch(setWorkersListLoading(true))
     try {
-        const res = await instance().close().getWorkersList()
+        const res = await instance().close().getWorkersList(payload)
         dispatch(setWorkersList(res.data))
     } catch (e) {
         console.log(e)
     }
+    dispatch(setWorkersListLoading(false))
+}
+
+export const getSortedClientsAsync: IGetSortedClients = payload => async (dispatch: any) => {
+    dispatch(setClientsListLoading(true))
+    await instance().close().getSortedClientsList(payload)
+        .then(res => {
+            dispatch(setClientsList(res.data))
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    dispatch(setClientsListLoading(false))
+}
+
+export const getSortedWorkersAsync: IGetSortedWorkers = payload => async (dispatch: any) => {
+    dispatch(setWorkersListLoading(true))
+    await instance().close().getSortedWorkersList(payload)
+        .then(res => {
+            dispatch(setWorkersList(res.data))
+        })
+        .catch(err => {
+            console.log(err)
+        })
     dispatch(setWorkersListLoading(false))
 }

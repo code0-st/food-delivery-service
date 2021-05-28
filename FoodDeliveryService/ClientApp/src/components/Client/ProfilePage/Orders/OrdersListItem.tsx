@@ -27,23 +27,23 @@ export const OrdersListItem: React.FC<IOrdersListItemProps> = ({
                 }
             }}>
                 <div className={s.order_main}>
-                    <div className={s.order_main_column}>
+                    <div className={s.order_main_column} style={{flex: '0 0 15%'}}>
                         <div>Дата создания</div>
                         <div>{formatIsoToDate(order.dateCreated)} {formatIsoToTime(order.dateCreated)}</div>
                     </div>
-                    <div className={s.order_main_column}>
+                    <div className={s.order_main_column} style={{flex: '0 0 15%'}}>
                         <div>Дата закрытия</div>
                         <div>{order.dateClosed && `${formatIsoToDate(order.dateCreated)} ${formatIsoToTime(order.dateCreated)}` || "Не закрыт"}</div>
                     </div>
-                    <div className={s.order_main_column}>
+                    <div className={s.order_main_column} style={{flex: '0 0 15%'}}>
                         <div>Стоимость</div>
                         <div>{summary} руб.</div>
                     </div>
-                    <div className={s.order_main_column}>
+                    <div className={s.order_main_column} style={{flex: '0 0 15%'}}>
                         <div>Статус</div>
                         <div>{order.status.name}</div>
                     </div>
-                    <div className={s.order_main_column}>
+                    <div className={s.order_main_column} style={{flex: '0 0 15%'}}>
                         <div>Пункт выдачи</div>
                         <div>{order.picUpPoint && order.picUpPoint.name || "Курьером"}</div>
                     </div>

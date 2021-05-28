@@ -5,7 +5,7 @@ import {
     SET_USER_INFO_LOADING_ACTION,
     SET_WORKERS_LIST_ACTION, SET_WORKERS_LIST_LOADING_ACTION
 } from "../types";
-import {IClientBody, IWorkerBody} from "../../../api/requests/user/types.data";
+import {IClientBody, IWorkerBody, TGetSortedClients, TGetSortedWorkers} from "../../../api/requests/user/types.data";
 
 export interface IRequestUserInfo {
     (id: string | null, role: string | null): void
@@ -17,6 +17,18 @@ export interface ICreateClient {
 
 export interface ICreateWorker {
     (payload: IWorkerBody): void
+}
+
+export interface IGetSearchUsers {
+    (payload: {searchValue?: string}): void
+}
+
+export interface IGetSortedClients {
+    (payload: TGetSortedClients): void
+}
+
+export interface IGetSortedWorkers {
+    (payload: TGetSortedWorkers): void
 }
 
 export interface ISetUserInfo {

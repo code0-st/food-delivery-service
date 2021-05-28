@@ -13,12 +13,6 @@ export type TEnumsReducer = {
     }
 }
 
-// action types
-// export const GET_CATALOGS = 'GET_CATALOGS'
-// export const GET_ORDER_STATUSES = 'GET_ORDER_STATUSES'
-// export const GET_DEPARTMENTS = 'GET_DEPARTMENTS'
-// export const GET_POSITIONS = 'GET_POSITIONS'
-
 export const SET_CATALOGS = 'SET_CATALOGS'
 export const SET_CATALOGS_LOADING = 'SET_CATALOGS_LOADING'
 
@@ -30,12 +24,6 @@ export const SET_DEPARTMENTS_LOADING = 'SET_DEPARTMENTS_LOADING'
 
 export const SET_POSITIONS = 'SET_POSITIONS'
 export const SET_POSITIONS_LOADING = 'SET_POSITIONS_LOADING'
-
-// action creators types
-// export type GET_CATALOGS_ACTION = { type: typeof GET_CATALOGS }
-// export type GET_ORDER_STATUSES_ACTION = { type: typeof GET_ORDER_STATUSES }
-// export type GET_DEPARTMENTS_ACTION = { type: typeof GET_DEPARTMENTS }
-// export type GET_POSITIONS_ACTION = { type: typeof GET_POSITIONS, }
 
 export type SET_CATALOGS_ACTION = {
     type: typeof SET_CATALOGS,

@@ -6,6 +6,7 @@ import {
     setPositionsLoading
 } from "./actions";
 import {instance} from "../../../api";
+import {ICreateCatalog, IEditCatalog, IRemoveCatalog} from "./types";
 
 
 export const getCatalogsAsync = () => async (dispatch: any) => {
@@ -21,7 +22,7 @@ export const getCatalogsAsync = () => async (dispatch: any) => {
 export const getDepartmentsAsync = () => async (dispatch: any) => {
     dispatch(setDepartmentsLoading(true))
     try {
-        const res = await instance().open().getDepartments()
+        const res = await instance().close().getDepartments()
         dispatch(setDepartments(res.data))
     } catch (e) {
     }
@@ -31,7 +32,7 @@ export const getDepartmentsAsync = () => async (dispatch: any) => {
 export const getOrderStatusesAsync = () => async (dispatch: any) => {
     dispatch(setOrderStatusesLoading(true))
     try {
-        const res = await instance().open().getOrderStatuses()
+        const res = await instance().close().getOrderStatuses()
         dispatch(setOrderStatuses(res.data))
     } catch (e) {
     }
@@ -41,9 +42,39 @@ export const getOrderStatusesAsync = () => async (dispatch: any) => {
 export const getPositionsAsync = () => async (dispatch: any) => {
     dispatch(setPositionsLoading(true))
     try {
-        const res = await instance().open().getPositions()
+        const res = await instance().close().getPositions()
         dispatch(setPositions(res.data))
     } catch (e) {
     }
     dispatch(setPositionsLoading(false))
+}
+
+export const createCatalogAsync: ICreateCatalog = payload => async (dispatch: any) => {
+    await instance().close().createCatalog(payload)
+        .then(res => {
+            dispatch(getCatalogsAsync())
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
+
+export const editCatalogAsync: IEditCatalog = payload => async (dispatch: any) => {
+    await instance().close().editCatalog(payload)
+        .then(res => {
+            dispatch(getCatalogsAsync())
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
+
+export const removeCatalogAsync: IRemoveCatalog = payload => async (dispatch: any) => {
+    await instance().close().removeCatalog(payload)
+        .then(res => {
+            dispatch(getCatalogsAsync())
+        })
+        .catch(err => {
+            console.log(err)
+        })
 }

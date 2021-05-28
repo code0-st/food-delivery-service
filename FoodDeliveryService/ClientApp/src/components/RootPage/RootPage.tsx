@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {TRootState} from "../../redux/store";
 import {connect} from "react-redux";
 import {setCurrentRootPage, setCurrentRootPageWorker} from "../../redux/reducers/rootPage/actions/actions";
@@ -14,6 +14,8 @@ import {ShopBasketContainer} from "../common/ShopBasket/ShopBasket";
 import {CreateBasket} from "../common/IconedLabels/Basket";
 import {getUserRole} from "../../helpers/helpers";
 import {CreateExit, CreateExitContainer} from "../common/IconedLabels/Exit";
+import {getOrderStatusesAsync} from "../../redux/reducers/enums/actions";
+
 
 const s = require('./styles.module.scss')
 
@@ -22,6 +24,7 @@ interface IRootPageProps {
     workersInternalPage: INavigationItem[]
     setCurrentRootPage: ISetCurrentRootPage
     setCurrentRootPageWorker: ISetCurrentRootPageWorker
+    getOrderStatusesAsync: any
     userInfo: IClient | IWorker | null
 }
 
@@ -31,10 +34,13 @@ const RootPage: React.FC<IRootPageProps> = ({
                                                 workersInternalPage,
                                                 setCurrentRootPage,
                                                 setCurrentRootPageWorker,
+                                                getOrderStatusesAsync,
                                                 children,
                                             }) => {
     const [open, setOpen] = useState<boolean>(false)
-
+    useEffect(() => {
+        getOrderStatusesAsync()
+    }, [])
     return <div className={s.root}>
         <div className={s.root_header}>
             <div className={s.row}>
@@ -45,7 +51,7 @@ const RootPage: React.FC<IRootPageProps> = ({
                     ? <ProfileLink userName={userInfo.userName}/>
                     : <LoginLink/>}
                 {getUserRole() === 'client' && <CreateBasket onClick={() => setOpen(true)}/>}
-                {userInfo && <CreateExitContainer />}
+                {userInfo && <CreateExitContainer/>}
             </div>
         </div>
         {children}
@@ -66,6 +72,7 @@ const mapStateToProps = (state: TRootState) => ({
 const mapDispatchToProps = {
     setCurrentRootPage,
     setCurrentRootPageWorker,
+    getOrderStatusesAsync,
 }
 
 export const RootPageContainer = connect(mapStateToProps, mapDispatchToProps)(RootPage)

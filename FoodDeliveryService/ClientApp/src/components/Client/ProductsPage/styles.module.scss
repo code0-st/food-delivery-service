@@ -38,6 +38,7 @@
   height: 285px!important;
 }
 .card {
+  position: relative;
   cursor: pointer;
   padding: 25px 15px;
   display: flex;
@@ -61,6 +62,15 @@
   &:hover {
     box-shadow: 2px 2px 25px #000000;
     transition: all .2s ease-out;
+  }
+}
+.remove_icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  svg {
+    width: 36px;
+    height: 56px;
   }
 }
 .card_info {

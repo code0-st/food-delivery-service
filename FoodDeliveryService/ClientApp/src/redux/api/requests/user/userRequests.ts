@@ -1,6 +1,6 @@
 import {instanceAxiosClose, instanceAxiosOpen} from "../../instance.axios";
 import {paths} from "../../paths";
-import {IClientBody, IWorkerBody} from "./types.data";
+import {IClientBody, IWorkerBody, TGetSortedClients, TGetSortedWorkers, TGetUserInfo} from "./types.data";
 
 export const userRequests = () => ({
     open: () => ({
@@ -15,14 +15,24 @@ export const userRequests = () => ({
         getWorkerInfo: (body: string | null) => {
             return instanceAxiosClose(token).get(`${paths.workers.list}/${body}`)
         },
-        getClientsList: () => {
-            return instanceAxiosClose(token).get(paths.clients.list)
+        getClientsList: (body: TGetUserInfo) => {
+            return instanceAxiosClose(token).get(body.searchValue
+                ? `${paths.clients.list}?searchValue=${body.searchValue}`
+                : paths.clients.list)
         },
-        getWorkersList: () => {
-            return instanceAxiosClose(token).get(paths.workers.list)
+        getWorkersList: (body: TGetUserInfo) => {
+            return instanceAxiosClose(token).get(body.searchValue
+                ? `${paths.workers.list}?searchValue=${body.searchValue}`
+                : paths.workers.list)
         },
         createWorker: (body: IWorkerBody) => {
             return instanceAxiosClose(token).post(paths.workers.list, body)
         },
+        getSortedClientsList: (body: TGetSortedClients) => {
+            return instanceAxiosClose(token).get(`${paths.clients.sort}?isAsc=${body.isAsc}&sortState=${body.sortState}`)
+        },
+        getSortedWorkersList: (body: TGetSortedWorkers) => {
+            return instanceAxiosClose(token).get(`${paths.workers.sort}?isAsc=${body.isAsc}&sortState=${body.sortField}`)
+        }
     }),
 })

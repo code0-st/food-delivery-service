@@ -19,6 +19,7 @@ export const instance = () => {
             ...enumsRequests().close(token),
             ...userRequests().close(token),
             ...ordersRequests().close(token),
+            ...productsRequests().close(token),
         }),
     }
 }
