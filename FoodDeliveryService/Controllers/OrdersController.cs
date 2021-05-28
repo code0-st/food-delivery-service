@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FoodDeliveryService;
+using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
 
 namespace FoodDeliveryService.Controllers
 {
     [Route("api/[controller]")]
+    [Route("api/[controller]/search")]
     [ApiController]
     public class OrdersController : ControllerBase
     {
@@ -21,6 +24,7 @@ namespace FoodDeliveryService.Controllers
         }
 
         // GET: api/Orders
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders(Guid clientId)
         {
@@ -65,6 +69,56 @@ namespace FoodDeliveryService.Controllers
 
             return orders;
         }
+
+        [Authorize]
+        [HttpGet("sort")]
+        public async Task<ActionResult<IEnumerable<Order>>> Sort(bool isAsc = true, OrdersSortState sortState = OrdersSortState.Id)
+        {
+            var orders = _context.Orders
+                    .Include(o => o.Client)
+                    .Include(o => o.Status)
+                    .Include(o => o.PicUpPoint)
+                    .Include(o => o.ProductsInOrders)
+                    .ToList();
+
+            if(sortState == OrdersSortState.Id)
+            {
+                orders = isAsc
+                    ? orders.OrderBy(o => o.Id).ToList() 
+                    : orders.OrderByDescending(o => o.Id).ToList();
+            } else if (sortState == OrdersSortState.DateCreated)
+            {
+                orders = isAsc
+                     ? orders.OrderBy(o => o.DateCreated).ToList()
+                     : orders.OrderByDescending(o => o.DateCreated).ToList();
+            } else
+            {
+                orders = isAsc
+                    ? orders.OrderBy(o => o.Status.Name).ToList()
+                    : orders.OrderByDescending(o => o.Status.Name).ToList();
+            }
+
+            foreach (var order in orders)
+            {
+                order.Client = new Client
+                {
+                    Id = order.Client.Id,
+                    FirstName = order.Client.FirstName,
+                    LastName = order.Client.LastName,
+                    Patronymic = order.Client.Patronymic,
+                    Phone = order.Client.Phone,
+                    UserName = order.Client.UserName,
+                    Address = order.Client.Address
+                };
+                foreach (var product in order.ProductsInOrders)
+                {
+                    product.Product = _context.Products.Find(product.ProductId);
+                }
+            }
+
+            return orders;
+        }
+
 
         // GET: api/Orders/5
         [HttpGet("{id}")]
@@ -113,6 +167,7 @@ namespace FoodDeliveryService.Controllers
 
         // POST: api/Orders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public int PostOrder(Order order)
         {
@@ -132,6 +187,32 @@ namespace FoodDeliveryService.Controllers
                 .FirstOrDefault();
 
             return currentOrderId;
+        }
+
+        [Authorize]
+        [HttpPost("status")]
+        public async Task<IActionResult> SetOrderStatus([FromBody] SetOrderStatus content)
+        {
+            var order = await _context.Orders.FindAsync(content.Id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            order.StatusId = content.StatusId;
+            order.Status = _context.OrderStatuses.Find(content.StatusId);
+            if (content.StatusId == 5)  // Заказ закрыт
+            {
+                order.DateClosed = DateTime.Now;
+            }
+            _context.Entry(order).State = EntityState.Modified;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+            }
+            return NoContent();
         }
 
         // DELETE: api/Orders/5

@@ -33,14 +33,33 @@ namespace FoodDeliveryService.Controllers
             else
             {
                 return await _context.Clients
-                    .Where(c => c.FirstName == searchValue
-                             || c.LastName == searchValue
-                             || c.Patronymic == searchValue
-                             || c.UserName == searchValue)
+                    .Where(c => c.FirstName.Contains(searchValue)
+                             || c.LastName.Contains(searchValue)
+                             || c.Patronymic.Contains(searchValue)
+                             || c.UserName.Contains(searchValue))
                     .ToListAsync();
             }
         }
+        [Authorize]
+        [HttpGet("sort")]
+        public async Task<ActionResult<IEnumerable<Client>>> GetSortedClients(bool isAsc = true, ClientsSortState sortState = ClientsSortState.LastName)
+        {
+            var clients = _context.Clients.ToList();
 
+            if(sortState == ClientsSortState.LastName)
+            {
+                clients = isAsc
+                    ? clients.OrderBy(c => c.LastName).ToList()
+                    : clients.OrderByDescending(c => c.LastName).ToList();
+            } else
+            {
+                clients = isAsc
+                    ? clients.OrderBy(c => c.FirstName).ToList()
+                    : clients.OrderByDescending(c => c.FirstName).ToList();
+            }
+            return clients;
+        }
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<Client>> GetClient(Guid id)
         {

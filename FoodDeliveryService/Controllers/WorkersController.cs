@@ -34,14 +34,48 @@ namespace FoodDeliveryService.Controllers
             } else
             {
                 return await _context.Workers
-                    .Where(w => w.FirstName == searchValue
-                             || w.LastName == searchValue
-                             || w.Patronymic == searchValue
-                             || w.UserName == searchValue)
+                    .Where(w => w.FirstName.Contains(searchValue)
+                             || w.LastName.Contains(searchValue)
+                             || w.Patronymic.Contains(searchValue)
+                             || w.UserName.Contains(searchValue))
                     .Include(w => w.Department)
                     .Include(w => w.Position)
                     .ToListAsync();
             } 
+        }
+
+        [Authorize]
+        [HttpGet("sort")]
+        public async Task<ActionResult<IEnumerable<Worker>>> GetSortedWorkers(bool isAsc = true, WorkersSortState sortState = WorkersSortState.LastName)
+        {
+            var workers = _context.Workers
+                .Include(w => w.Department)
+                .Include(w => w.Position)
+                .ToList();
+            switch (sortState)
+            {
+                case WorkersSortState.LastName:
+                    workers = isAsc
+                        ? workers.OrderBy(c => c.LastName).ToList()
+                        : workers.OrderByDescending(c => c.LastName).ToList();
+                    break;
+                case WorkersSortState.FirstName:
+                    workers = isAsc
+                        ? workers.OrderBy(c => c.FirstName).ToList()
+                        : workers.OrderByDescending(c => c.FirstName).ToList();
+                    break;
+                case WorkersSortState.Department: 
+                    workers = isAsc
+                        ? workers.OrderBy(c => c.Department.Name).ToList()
+                        : workers.OrderByDescending(c => c.Department.Name).ToList();
+                    break;
+                case WorkersSortState.Position:
+                    workers = isAsc
+                        ? workers.OrderBy(c => c.Position.Name).ToList()
+                        : workers.OrderByDescending(c => c.Position.Name).ToList();
+                    break;
+            }
+            return workers;
         }
 
         [Authorize]
